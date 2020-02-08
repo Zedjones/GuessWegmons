@@ -23,7 +23,11 @@ namespace GuessWegmons
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(
+                options => { 
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                }
+            );
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
