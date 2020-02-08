@@ -35,7 +35,7 @@ namespace GuessWegmons.Services
         public string CreateRoom(string playerId)
         {
             string roomName = GetRandomHexNumber(6);
-            while (rooms.Contains(room => room.name.equals(roomName)))
+            while (rooms.Any(room => room.Name.Equals(roomName)))
                 roomName = GetRandomHexNumber(6);
             rooms.Add(new Room()
             {
@@ -43,6 +43,7 @@ namespace GuessWegmons.Services
                 Player1Session = playerId,
                 Player2Session = null
             });
+            return roomName;
         }
 
         /// <summary>
