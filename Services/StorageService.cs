@@ -32,7 +32,7 @@ namespace GuessWegmons.Services
         /// Create a new room.
         /// </summary>
         /// <param name="playerId">Player session Id to add</param>
-        /// <returns>Name of the room created</returns>
+        /// <returns>Name of the created room</returns>
         public string CreateRoom(string playerId)
         {
             string roomName = GetRandomHexNumber(6);
