@@ -7,14 +7,14 @@ import { Game } from './components/Game';
 import './App.css'
 
 export default class App extends Component {
-  static displayName = App.name;
+    static displayName = App.name;
 
-  render() {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/game' component={Game} />
-      </Layout>
-    );
-  }
+    render() {
+        return (
+            <Layout>
+                <Route exact path='/' component={Home} />
+                <Route path='/game/:id' component={Game} />
+            </Layout>
+        );
+    }
 }

@@ -1,38 +1,46 @@
 import React, { Component } from 'react';
 import { NewRoom } from './room/NewRoom';
 import { JoinRoom } from './room/JoinRoom';
+import { Alert } from 'reactstrap';
 
 export class Home extends Component {
     static displayName = Home.name;
     constructor(props) {
         super(props)
-        this.state = {inGame: false}
+        this.state = {showAlert: false}
 
-        // function binding
+        
         this.joinGame = this.joinGame.bind(this)
     }
 
     componentDidMount() {
-        // TODO - check if in game
-        // val = fetch(...)
-        this.setState({inGame: false}) // inGame: val
+        fetch('/api/room', {method: 'get'})
+        .then((resp) => {
+            if (!resp.ok)
+                throw Error("")
+            return resp.json()
+        })
+        .then((resp) => {
+            this.joinGame(resp.id)
+        })
+        .catch((error) => {
+            this.setState({codeErr: "Something went wrong. Try again later.", showAlert: true})
+        })
     }
 
     joinGame(code) {
         this.setState({inGame: true})
+        window.location = `/game/:${code}`
     }
 
     render() {
-        if (this.state.inGame) {
-            window.location = '/game'
-        }
-        else {
-            return (
-                <div className="center">
-                    <NewRoom joinRoom={this.joinGame}></NewRoom>
-                    <JoinRoom joinRoom={this.joinGame}></JoinRoom>
-                </div>
-            );
-        }
+        const alertStyle = (this.state.showAlert) ? {display: 'block'} : {display: 'none'}
+        return (
+            <div className="center">
+                <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
+                <NewRoom joinRoom={this.joinGame}></NewRoom>
+                <JoinRoom joinRoom={this.joinGame}></JoinRoom>
+            </div>
+        );
     }
 }
