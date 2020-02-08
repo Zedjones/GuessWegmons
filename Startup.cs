@@ -55,6 +55,7 @@ namespace GuessWegmons
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -78,7 +79,6 @@ namespace GuessWegmons
                 }
             });
 
-            app.UseSession();
         }
     }
 }

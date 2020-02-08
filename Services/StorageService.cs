@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using GuessWegmons.Models;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace GuessWegmons.Services
 {
@@ -10,6 +11,11 @@ namespace GuessWegmons.Services
     /// </summary>
     public class StorageService
     {
+        /// <summary>
+        /// Logger.
+        /// </summary>
+        private readonly ILogger<StorageService> logger;
+
         /// <summary>
         /// All rooms currently being used.
         /// </summary>
@@ -23,16 +29,18 @@ namespace GuessWegmons.Services
         /// <summary>
         /// Create a new Storage Service.
         /// </summary>
-        public StorageService()
+        /// <param name="logger">Logger</param>
+        public StorageService(ILogger<StorageService> logger)
         {
             rooms = new ConcurrentBag<Room>();
+            this.logger = logger;
         }
 
         /// <summary>
         /// Create a new room.
         /// </summary>
         /// <param name="playerId">Player session Id to add</param>
-        /// <returns>Name of the room created</returns>
+        /// <returns>Name of the created room</returns>
         public string CreateRoom(string playerId)
         {
             string roomName = GetRandomHexNumber(6);
@@ -44,6 +52,7 @@ namespace GuessWegmons.Services
                 Player1Session = playerId,
                 Player2Session = null
             });
+            logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
         }
 
@@ -60,10 +69,12 @@ namespace GuessWegmons.Services
             {
                 roomToUpdate.Player2Session = playerId;
                 rooms.Add(roomToUpdate);
+                logger.LogInformation($"'{playerId}' successfully joined room '{roomName}'.");
                 return true;
             }
             else
             {
+                logger.LogInformation($"'{playerId}' failed to join room '{roomName}'.");
                 return false;
             }
         }
@@ -82,6 +93,48 @@ namespace GuessWegmons.Services
             if (digits % 2 == 0)
                 return result;
             return result + random.Next(16).ToString("X");
+        }
+
+        /// <summary>
+        /// Add a new question to a room.
+        /// </summary>
+        /// <param name="roomName">Name of the room</param>
+        /// <param name="question"></param>
+        public void AddQuestion(string roomName, QuestionAnswer question)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                roomToUpdate.questionsAndAnswers.Push(question);
+                rooms.Add(roomToUpdate);
+                logger.LogInformation($"'{question}' successfully added to room '{roomName}'.");
+            }
+            else
+            {
+                logger.LogInformation($"'{question}' failed to add to room '{roomName}'.");
+            }
+        }
+
+        /// <summary>
+        /// Add a new question to a room.
+        /// </summary>
+        /// <param name="roomName">Name of the room</param>
+        /// <param name="answer"></param>
+        public void AddAnswer(string roomName, QuestionAnswer answer)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                var question = roomToUpdate.questionsAndAnswers.Pop();
+                question.answer = answer.answer;
+                roomToUpdate.questionsAndAnswers.Push(question);
+                rooms.Add(roomToUpdate);
+                logger.LogInformation($"'{answer}' successfully added to room '{roomName}'.");
+            }
+            else
+            {
+                logger.LogInformation($"'{answer}' failed to add to room '{roomName}'.");
+            } 
         }
     }
 }
