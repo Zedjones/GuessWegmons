@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 
 export class NewRoom extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ export class NewRoom extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.getCode}>Create A Room</button>
+                <h2>Start A New Room</h2>
+                <Button onClick={this.getCode}>Create</Button>
             </div>
         )
     }

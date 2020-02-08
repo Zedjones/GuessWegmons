@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
+import { Input } from 'reactstrap';
 
 export class JoinRoom extends Component {
     constructor(props) {
@@ -6,6 +8,11 @@ export class JoinRoom extends Component {
         this.state = {textval: ''}
         // function binding
         this.joinWithCode = this.joinWithCode.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({textval: event.target.value});
     }
 
     joinWithCode() {
@@ -16,9 +23,14 @@ export class JoinRoom extends Component {
     render() {
         return (
             <div>
-                <input type='text' value={this.state.textval}/>
-                <button onClick={this.joinWithCode}>Join Room</button>
+                <h2>Or Join A Room</h2>
+                <Input type="text" value={this.state.textval} style={codeInputStyle} onChange={this.handleChange} className="center" />
+                <Button onClick={this.joinWithCode}>Join Room</Button>
             </div>
         )
     }
 }
+
+const codeInputStyle = {
+    maxWidth: '10em'
+};

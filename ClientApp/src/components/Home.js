@@ -28,7 +28,7 @@ export class Home extends Component {
         }
         else {
             return (
-                <div>
+                <div className="center">
                     <NewRoom joinRoom={this.joinGame}></NewRoom>
                     <JoinRoom joinRoom={this.joinGame}></JoinRoom>
                 </div>
