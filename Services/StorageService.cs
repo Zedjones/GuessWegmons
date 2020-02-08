@@ -94,5 +94,47 @@ namespace GuessWegmons.Services
                 return result;
             return result + random.Next(16).ToString("X");
         }
+
+        /// <summary>
+        /// Add a new question to a room.
+        /// </summary>
+        /// <param name="roomName">Name of the room</param>
+        /// <param name="question"></param>
+        public void AddQuestion(string roomName, QuestionAnswer question)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                roomToUpdate.questionsAndAnswers.Push(question);
+                rooms.Add(roomToUpdate);
+                logger.LogInformation($"'{question}' successfully added to room '{roomName}'.");
+            }
+            else
+            {
+                logger.LogInformation($"'{question}' failed to add to room '{roomName}'.");
+            }
+        }
+
+        /// <summary>
+        /// Add a new question to a room.
+        /// </summary>
+        /// <param name="roomName">Name of the room</param>
+        /// <param name="answer"></param>
+        public void AddAnswer(string roomName, QuestionAnswer answer)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                var question = roomToUpdate.questionsAndAnswers.Pop();
+                question.answer = answer.answer;
+                roomToUpdate.questionsAndAnswers.Push(question);
+                rooms.Add(roomToUpdate);
+                logger.LogInformation($"'{answer}' successfully added to room '{roomName}'.");
+            }
+            else
+            {
+                logger.LogInformation($"'{answer}' failed to add to room '{roomName}'.");
+            } 
+        }
     }
 }

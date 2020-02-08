@@ -20,7 +20,7 @@ namespace GuessWegmons.Models
         /// <summary>
         /// List of the questions and their answers that have been in this room so far.
         /// </summary>
-        public QuestionAnswer questionsAndAnswers { get; set; }
+        public Stack<QuestionAnswer> questionsAndAnswers { get; set; }
 
         /// <summary>
         /// Room 'name'.
