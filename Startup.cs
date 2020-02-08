@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using System;
+using GuessWegmons.Services;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,15 @@ namespace GuessWegmons
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddSingleton<StorageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +77,8 @@ namespace GuessWegmons
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseSession();
         }
     }
 }
