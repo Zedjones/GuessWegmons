@@ -5,18 +5,15 @@ namespace GuessWegmons.Controllers
 {
     [ApiController]
     [Route("api/room/[controller]")]
-    public class CreateController : ControllerBase
+    public class JoinController : ControllerBase
     {
         StorageService storageService;
-        public CreateController(StorageService storageService)
+        public JoinController(StorageService storageService)
         {
             this.storageService = storageService;
         }
-
-        [HttpPost]
-        public string Create()
+        public void Join([FromQuery(Name = "id")] string id)
         {
-            return "";
         }
     }
 }
