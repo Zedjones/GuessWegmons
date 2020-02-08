@@ -18,6 +18,11 @@ namespace GuessWegmons.Models
         public string Player2Session { get; set; }
 
         /// <summary>
+        /// List of the questions and their answers that have been in this room so far.
+        /// </summary>
+        public QuestionAnswer questionsAndAnswers { get; set; }
+
+        /// <summary>
         /// Room 'name'.
         /// </summary>
         public string Name { get; set; }
