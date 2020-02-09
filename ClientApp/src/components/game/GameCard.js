@@ -7,13 +7,21 @@ import {
 export class GameCard extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = { marked: false }
+        this.toggle = this.toggle.bind(this)
+    }
+
+    toggle() {
+        this.setState({ marked: !this.state.marked })
     }
 
     render() {
+        var cs = {}
+        if (this.state.marked)
+            cs = { background: '#aaa' }
         return (
             <div>
-                <Card style={cardStyle}>
+                <Card style={cardStyle, cs} onClick={this.toggle}>
                     <CardImg top width="100%" src={this.props.img} alt={this.props.name} />
                     <CardBody>
                         <CardTitle style={titleStyle}>{this.props.name}</CardTitle>
