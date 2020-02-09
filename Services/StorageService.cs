@@ -55,7 +55,8 @@ namespace GuessWegmons.Services
                 Name = roomName,
                 Player1Session = playerId,
                 Player2Session = null,
-                PokemonDtos = new List<PokemonDto>()
+                PokemonDtos = new List<PokemonDto>(),
+                WhoseTurn = 1
             };
             newRoom.CreatePokemonList(retrievePokemon);
             rooms.Add(newRoom);
