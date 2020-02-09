@@ -21,6 +21,7 @@ export class Home extends Component {
             return resp.json()
         })
         .then((resp) => {
+            console.log(resp)
             this.joinGame(resp.id)
         })
         .catch((error) => {

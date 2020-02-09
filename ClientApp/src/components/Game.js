@@ -18,15 +18,14 @@ export class Game extends Component {
     }
 
     getPlayersReady() {
-        // TODO endpoint
-        fetch('')
+        fetch('/api/room', {method: 'get'})
             .then((resp) => {
                 if (!resp.ok)
                     throw Error("")
                 return resp.json()
             })
             .then((resp) => {
-                // TODO what is good or bad?
+                // TODO what does data look like
                 console.log(resp)
             })
             .catch((error) => {
