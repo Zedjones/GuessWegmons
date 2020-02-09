@@ -35,7 +35,7 @@ export class Game extends Component {
                     this.state.playersReady = true
                 }
                 // my turn?
-                if (true){
+                if (resp.myTurn){
                     this.setState({ myTurn: true }) // for now yes
                 } else {
                     this.setState({questionOverride: false, myTurn: false})
