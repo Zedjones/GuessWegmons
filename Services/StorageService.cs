@@ -176,14 +176,6 @@ namespace GuessWegmons.Services
         public Room GetRoom(string roomName)
         {
             var room = rooms.Where(room => room.Name == roomName).FirstOrDefault();
-            if (room is null)
-            {
-                logger.LogInformation($"{roomName} does not exist");
-            }
-            else
-            {
-                logger.LogInformation($"{roomName} located");
-            }
             return room;
         }
     }
