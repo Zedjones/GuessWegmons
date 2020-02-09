@@ -20,9 +20,7 @@ export class Board extends Component {
                 return resp.json()
             })
             .then((resp) => {
-                console.log(resp)
                 if (resp.length >= 1) {
-                    console.log('updating board')
                     this.setState({ board: resp })
                     this.clearBoardInterval()
                 }

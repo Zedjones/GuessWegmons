@@ -4,7 +4,7 @@ namespace GuessWegmons.Models
 {
     public class RoomDto
     {
-        public RoomDto(Room fromRoom)
+        public RoomDto(Room fromRoom, int playerId)
         {
             Player1In = fromRoom.Player1Session != null;
             Player2In = fromRoom.Player2Session != null;
@@ -15,7 +15,13 @@ namespace GuessWegmons.Models
             else
             {
                 questionsAndAnswers = fromRoom.questionsAndAnswers;
-
+            }
+            if(playerId == 1)
+            {
+                MyTurn = fromRoom.Turn % 2 == 1;
+            }
+            else {
+                MyTurn = fromRoom.Turn % 2 == 0;
             }
             Name = fromRoom.Name;
         }
@@ -39,6 +45,8 @@ namespace GuessWegmons.Models
         /// Room 'name'.
         /// </summary>
         public string Name { get; set; }
+
+        public bool MyTurn { get; set; }
     }
 
 }

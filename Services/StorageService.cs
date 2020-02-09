@@ -27,12 +27,17 @@ namespace GuessWegmons.Services
         /// Stored random object for generating a hex string.
         /// </summary>
         private static Random random = new Random();
+
+        /// <summary>
+        /// Retrieve Pokemon object for creating Pokemon.
+        /// </summary>
         private RetrievePokemon retrievePokemon;
 
         /// <summary>
         /// Create a new Storage Service.
         /// </summary>
         /// <param name="logger">Logger</param>
+        /// <param name="retrievePokemon">Retrieve Pokemon object for creating Pokemon</param>
         public StorageService(ILogger<StorageService> logger, RetrievePokemon retrievePokemon)
         {
             rooms = new ConcurrentBag<Room>();
@@ -55,12 +60,30 @@ namespace GuessWegmons.Services
                 Name = roomName,
                 Player1Session = playerId,
                 Player2Session = null,
-                PokemonDtos = new List<PokemonDto>()
+                PokemonDtos = new List<PokemonDto>(),
+                WhoseTurn = 1
             };
             newRoom.CreatePokemonList(retrievePokemon);
             rooms.Add(newRoom);
             logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
+        }
+
+        public bool IncrementTurn(string roomName)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                roomToUpdate.Turn++;
+                rooms.Add(roomToUpdate);
+                logger.LogWarning($"{roomName} turn incremented");
+                return true;            
+            }
+            else
+            {
+                logger.LogWarning($"{roomName} did not exist");
+                return false;
+            }
         }
 
         /// <summary>
@@ -144,6 +167,11 @@ namespace GuessWegmons.Services
             }
         }
 
+        /// <summary>
+        /// Get a room based on name.
+        /// </summary>
+        /// <param name="roomName">Name of the room</param>
+        /// <returns>Room object</returns>
         public Room GetRoom(string roomName)
         {
             var room = rooms.Where(room => room.Name == roomName).FirstOrDefault();
