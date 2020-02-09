@@ -17,14 +17,18 @@ namespace GuessWegmons.Controllers
 
         public ActionResult<RoomDto> GetRoom()
         {
+            var playerId = HttpContext.Session.GetInt32("player");
+            if (!playerId.HasValue)
+            {
+                return BadRequest();
+            }
             var roomName = HttpContext.Session.GetString("roomName");
-            var playerId = HttpContext.Session.GetInt32("player").Value;
             var room = storageService.GetRoom(roomName);
             if(room is null)
             {
                 return BadRequest();
             }
-            return new RoomDto(storageService.GetRoom(roomName), playerId);
+            return new RoomDto(storageService.GetRoom(roomName), playerId.Value);
         }
     }
 }
