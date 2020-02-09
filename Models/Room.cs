@@ -29,6 +29,7 @@ namespace GuessWegmons.Models
         /// </summary>
         public string Name { get; set; }
         public List<PokemonDto> PokemonDtos { get; set; }
+        public int WhoseTurn { get; set; }
 
         public async void CreatePokemonList(RetrievePokemon retrievePokemon)
         {
