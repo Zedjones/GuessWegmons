@@ -23,5 +23,12 @@ namespace GuessWegmons.Controllers
             question.player = playerNum.Value;
             storageService.AddQuestion(roomName, question);
         }
+        [HttpGet]
+        public QuestionAnswer GetQuestion()
+        {
+            var roomName = HttpContext.Session.GetString("roomName");
+            var room = storageService.GetRoom(roomName);
+            return room.questionsAndAnswers.Peek();
+        }
     }
 }

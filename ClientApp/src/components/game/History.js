@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Message } from './Message';
 
 export class History extends Component {
     constructor(props) {
