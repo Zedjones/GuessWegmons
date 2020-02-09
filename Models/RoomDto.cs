@@ -16,7 +16,13 @@ namespace GuessWegmons.Models
             {
                 questionsAndAnswers = fromRoom.questionsAndAnswers;
             }
-            MyTurn = fromRoom.WhoseTurn == playerId;
+            if(playerId == 1)
+            {
+                MyTurn = fromRoom.Turn % 2 == 1;
+            }
+            else {
+                MyTurn = fromRoom.Turn % 2 == 0;
+            }
             Name = fromRoom.Name;
         }
 

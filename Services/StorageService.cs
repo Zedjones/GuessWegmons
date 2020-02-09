@@ -69,6 +69,23 @@ namespace GuessWegmons.Services
             return roomName;
         }
 
+        public bool IncrementTurn(string roomName)
+        {
+            Room roomToUpdate;
+            if (rooms.TryTake(out roomToUpdate))
+            {
+                roomToUpdate.Turn++;
+                rooms.Add(roomToUpdate);
+                logger.LogWarning($"{roomName} turn incremented");
+                return true;            
+            }
+            else
+            {
+                logger.LogWarning($"{roomName} did not exist");
+                return false;
+            }
+        }
+
         /// <summary>
         /// Add a player to a room.
         /// </summary>
