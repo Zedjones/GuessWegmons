@@ -41,8 +41,9 @@ namespace GuessWegmons.Controllers
         /// <param name="guess">Guess to check</param>
         /// <param name="player">Player making the guess (1 = p1, 2 = p2)</param>
         [HttpPost]
-        public void MakeGuess(string guess, int player)
+        public void MakeGuess([FromQuery(Name = "guess")] string guess)
         {
+            var player = HttpContext.Session.GetInt32("player").Value;
             var room = storageService.GetRoom(HttpContext.Session.GetString("roomName"));
             if (!(room is null))
             {
