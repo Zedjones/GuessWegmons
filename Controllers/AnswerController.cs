@@ -35,8 +35,8 @@ namespace GuessWegmons.Controllers
         {
             var roomName = HttpContext.Session.GetString("roomName");
             var playerNum = HttpContext.Session.GetInt32("player");
-            storageService.AddAnswer(roomName, answer);
             storageService.IncrementTurn(roomName);
+            storageService.AddAnswer(roomName, answer);
         }
 
         /// <summary>

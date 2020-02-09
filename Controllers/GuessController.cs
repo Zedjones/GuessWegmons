@@ -53,6 +53,7 @@ namespace GuessWegmons.Controllers
                     if (room.Player2Answer.Equals(guess))
                     {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player2Answer}', guess was correct!");
+                        room.PlayerWon = 1;
                         return Ok(true);
                     }
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player2Answer}', guess was incorrect!");
@@ -64,6 +65,7 @@ namespace GuessWegmons.Controllers
                     if (room.Player1Answer.Equals(guess))
                     {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player1Answer}', guess was correct!");
+                        room.PlayerWon = 2;
                         return Ok(true); 
                     }  
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player1Answer}', guess was incorrect!");
