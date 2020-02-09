@@ -28,7 +28,11 @@ namespace GuessWegmons.Controllers
         {
             var roomName = HttpContext.Session.GetString("roomName");
             var room = storageService.GetRoom(roomName);
-            return room.questionsAndAnswers.Peek();
+            if (room.questionsAndAnswers.Count == room.Turn)
+            {
+                return room.questionsAndAnswers.Peek();
+            }
+            return null;
         }
     }
 }
