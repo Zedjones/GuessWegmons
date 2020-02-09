@@ -70,6 +70,11 @@ namespace GuessWegmons.Services
             return roomName;
         }
 
+        /// <summary>
+        /// Increment to the next turn.
+        /// </summary>
+        /// <param name="roomName">Room to increment turn for</param>
+        /// <returns>If successfull</returns>
         public bool IncrementTurn(string roomName)
         {
             Room roomToUpdate;
@@ -77,12 +82,12 @@ namespace GuessWegmons.Services
             {
                 roomToUpdate.Turn++;
                 rooms.Add(roomToUpdate);
-                logger.LogWarning($"{roomName} turn incremented");
+                logger.LogWarning($"Room '{roomName}' turn incremented.");
                 return true;            
             }
             else
             {
-                logger.LogWarning($"{roomName} did not exist");
+                logger.LogWarning($"Room '{roomName}' did not exist, turn failed to increment.");
                 return false;
             }
         }
@@ -105,7 +110,7 @@ namespace GuessWegmons.Services
             }
             else
             {
-                logger.LogInformation($"'{playerId}' failed to join room '{roomName}'.");
+                logger.LogInformation($"'{playerId}' failed to join room '{roomName}', room does not exist.");
                 return false;
             }
         }
@@ -142,7 +147,7 @@ namespace GuessWegmons.Services
             }
             else
             {
-                logger.LogInformation($"'{question}' failed to add to room '{roomName}'.");
+                logger.LogInformation($"'{question}' failed to add to room '{roomName}', room does not exist.");
             }
         }
 
@@ -164,7 +169,7 @@ namespace GuessWegmons.Services
             }
             else
             {
-                logger.LogInformation($"'{answer}' failed to add to room '{roomName}'.");
+                logger.LogInformation($"'{answer}' failed to add to room '{roomName}', room does not exist.");
             }
         }
 
@@ -172,7 +177,7 @@ namespace GuessWegmons.Services
         /// Get a room based on name.
         /// </summary>
         /// <param name="roomName">Name of the room</param>
-        /// <returns>Room object</returns>
+        /// <returns>Retrieved room object</returns>
         public Room GetRoom(string roomName)
         {
             var room = rooms.Where(room => room.Name == roomName).FirstOrDefault();

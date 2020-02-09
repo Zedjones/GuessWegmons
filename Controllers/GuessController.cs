@@ -22,7 +22,7 @@ namespace GuessWegmons.Controllers
         /// <summary>
         /// Storage service object for accessing Room info.
         /// </summary>
-        public StorageService storageService;
+        private StorageService storageService;
 
         /// <summary>
         /// Create a Guess Controller object.
