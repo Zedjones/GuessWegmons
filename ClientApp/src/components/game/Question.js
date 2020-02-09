@@ -8,6 +8,7 @@ export class Question extends Component {
         this.state = { textVal: '' }
         this.handleChange = this.handleChange.bind(this)
         this.sendMessage = this.sendMessage.bind(this)
+        this.handleGuess = this.handleGuess.bind(this)
     }
 
     handleChange(event) {
@@ -36,7 +37,7 @@ export class Question extends Component {
         // TODO submit guess endpoint
         fetch(`/api/room/guess?guess=${this.state.guess}`, { method: 'post' })
             .then((resp) => {
-                if (resp == true){
+                if (resp === true){
                     this.props.gameOver(true)
                 } else {
                     this.props.gameOver(false)
