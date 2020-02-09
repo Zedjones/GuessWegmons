@@ -7,7 +7,7 @@ namespace GuessWegmons.Models
     {
         public PokemonDto(PokeApiNet.Pokemon fromMon)
         {
-            Name = fromMon.Name;
+            Name = fromMon.Species.Name;
             PictureURL = fromMon.Sprites.FrontDefault;
             Types = fromMon.Types.Select(type => type.Type.Name).ToList();
         }
