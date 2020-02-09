@@ -9,6 +9,7 @@ export class Question extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.sendMessage = this.sendMessage.bind(this)
         this.handleGuess = this.handleGuess.bind(this)
+        this.sendGuess = this.sendGuess.bind(this)
     }
 
     handleChange(event) {
