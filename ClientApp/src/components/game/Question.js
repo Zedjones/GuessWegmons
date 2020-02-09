@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { Input } from 'reactstrap';
-import { Alert } from 'reactstrap';
 
 export class Question extends Component {
     constructor(props) {
@@ -39,8 +38,4 @@ export class Question extends Component {
             </div>
         )
     }
-}
-
-const codeInputStyle = {
-    maxWidth: '10em'
 }

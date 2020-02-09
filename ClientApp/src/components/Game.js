@@ -3,6 +3,7 @@ import { Alert } from 'reactstrap';
 import { History } from './game/History';
 import { Board } from './game/Board';
 import { Question } from './game/Question';
+import { Answer } from './game/Answer';
 
 export class Game extends Component {
     static timeoutCheck = 2000
@@ -60,6 +61,7 @@ export class Game extends Component {
                 }
             })
             .then((resp) => {
+                console.log(resp)
                 this.setState({ latestQuestion: resp.question, latestAnswer: resp.answer })
             })
             .catch((err) => {return})
@@ -77,7 +79,7 @@ export class Game extends Component {
         var loaded = this.state.boardLoaded
         const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
         var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion}></Question> : <div></div>
-        // var answer = (!this.state.myTurn && this.state.latestQuestion != null && this.state.playersReady) ? <Answer></Answer> : <div></div>
+        var answer = (!this.state.myTurn && this.state.latestQuestion != null && this.state.playersReady) ? <Answer question={this.state.latestQuestion}></Answer> : <div></div>
         return (
             <div>
                 <p>Room Number: <strong>{this.state.code}</strong></p>
@@ -85,7 +87,7 @@ export class Game extends Component {
                 <Board boardLoaded={this.boardLoaded}></Board>
                 <History boardLoaded={loaded}></History>
                 {question}
-                {/* {answer} */}
+                {answer}
             </div>
         )
     }
