@@ -26,5 +26,6 @@ namespace GuessWegmons.Models
         /// Room 'name'.
         /// </summary>
         public string Name { get; set; }
+        public List<PokemonDto> PokemonDtos { get; set; }
     }
 }
