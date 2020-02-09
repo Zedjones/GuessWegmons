@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuessWegmons.PokeApi;
+using System;
 
 namespace GuessWegmons.Models
 {
@@ -62,6 +63,9 @@ namespace GuessWegmons.Models
         {
             var pokeList = await retrievePokemon.CreateList();
             PokemonDtos = pokeList.Select(poke => new PokemonDto(poke)).ToList();
+            Random rnd = new Random();
+            Player1Answer = PokemonDtos[rnd.Next(0, 25)].Name;
+            Player2Answer = PokemonDtos[rnd.Next(0, 25)].Name;
         }
     }
 }

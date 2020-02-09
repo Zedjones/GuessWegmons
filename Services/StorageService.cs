@@ -66,9 +66,6 @@ namespace GuessWegmons.Services
                 PlayerWon = null
             };
             newRoom.CreatePokemonList(retrievePokemon);
-            Random rnd = new Random();
-            newRoom.Player1Answer = newRoom.PokemonDtos[rnd.Next(0, 25)].Name;
-            newRoom.Player2Answer = newRoom.PokemonDtos[rnd.Next(0, 25)].Name;
             rooms.Add(newRoom);
             logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
