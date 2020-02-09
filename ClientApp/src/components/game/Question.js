@@ -11,7 +11,7 @@ export class Question extends Component {
     }
 
     handleChange(event) {
-        this.setState({ textval: event.target.value });
+        this.setState({ textVal: event.target.value });
     }
 
     sendMessage() {

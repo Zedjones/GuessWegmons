@@ -7,25 +7,38 @@ export class Answer extends Component {
         super(props)
         this.state = {textVal: ''}
         this.handleChange = this.handleChange.bind(this)
-        this.sendMessage = this.sendMessage.bind(this)
+        this.yes = this.yes.bind(this)
+        this.no = this.no.bind(this)
     }
 
     handleChange(event) {
         this.setState({ textval: event.target.value });
     }
 
-    sendMessage() {
-        fetch('/api/message/question', {
+    yes() {
+        fetch('/api/message/answer', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
               },
-            body: JSON.stringify({'question': this.state.textVal})
+            body: JSON.stringify({'answer': true})
         })
         .then((resp) => {
             return
         })
-        this.props.updateGame()
+    }
+
+    no() {
+        fetch('/api/message/answer', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({'answer': false})
+        })
+        .then((resp) => {
+            return
+        })
     }
 
     render() {
