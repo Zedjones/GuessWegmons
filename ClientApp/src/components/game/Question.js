@@ -8,6 +8,7 @@ export class Question extends Component {
         super(props)
         this.state = {textVal: ''}
         this.handleChange = this.handleChange.bind(this)
+        this.sendMessage = this.sendMessage.bind(this)
     }
 
     handleChange(event) {
@@ -15,8 +16,17 @@ export class Question extends Component {
     }
 
     sendMessage() {
-        fetch('/api/message/question', {method: 'post'})
-        this.props.update()
+        fetch('/api/message/question', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({'question': this.state.textVal})
+        })
+        .then((resp) => {
+            return
+        })
+        this.props.updateGame()
     }
 
     render() {

@@ -9,7 +9,7 @@ export class Game extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { code: window.location.pathname.split(':')[1], playersReady: false, showAlert: false, boardLoaded: false, latestQuestion: null, latestAnswer: null}
+        this.state = { code: window.location.pathname.split(':')[1], playersReady: false, showAlert: false, boardLoaded: false, latestQuestion: null, latestAnswer: null, questionOverride: false }
 
         this.getRoom = this.getRoom.bind(this)
         this.boardLoaded = this.boardLoaded.bind(this)
@@ -23,7 +23,7 @@ export class Game extends Component {
     }
 
     getRoom() {
-        fetch('/api/room', {method: 'get'})
+        fetch('/api/room', { method: 'get' })
             .then((resp) => {
                 if (!resp.ok)
                     throw Error("")
@@ -35,7 +35,11 @@ export class Game extends Component {
                     this.state.playersReady = true
                 }
                 // my turn?
-                this.setState({myTurn: true}) // for now yes
+                if (true){
+                    this.setState({ myTurn: true }) // for now yes
+                } else {
+                    this.setState({questionOverride: false, myTurn: false})
+                }
 
                 // has question been asked?
                 this.latestQuestion()
@@ -47,28 +51,33 @@ export class Game extends Component {
     }
 
     latestQuestion() {
-        fetch('/api/message/question', {method: 'get'})
-        .then((resp) => {
-            return resp.json()
-        })
-        .then((resp) => {
-            this.setState({latestQuestion: resp.question, latestAnswer: resp.answer})
-        })
+        fetch('/api/message/question', { method: 'get' })
+            .then((resp) => {
+                if (resp == null) {
+                    throw Error('')
+                } else {
+                    return resp.json()
+                }
+            })
+            .then((resp) => {
+                this.setState({ latestQuestion: resp.question, latestAnswer: resp.answer })
+            })
+            .catch((err) => {return})
     }
 
     boardLoaded() {
-        this.setState({boardLoaded: true})
+        this.setState({ boardLoaded: true })
     }
 
     askedQuestion() {
-        this.setState({myTurn: false})
+        this.setState({ questionOverride: true })
     }
 
     render() {
         var loaded = this.state.boardLoaded
         const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
-        var question = (this.state.myTurn) ? <Question update={this.askedQuestion}></Question> : <div></div>
-        // var answer = (!this.state.myTurn && this.state.latestQuestion != null) ? <Answer></Answer> : <div></div>
+        var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion}></Question> : <div></div>
+        // var answer = (!this.state.myTurn && this.state.latestQuestion != null && this.state.playersReady) ? <Answer></Answer> : <div></div>
         return (
             <div>
                 <p>Room Number: <strong>{this.state.code}</strong></p>
