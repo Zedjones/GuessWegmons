@@ -38,7 +38,7 @@ export class Question extends Component {
         // TODO submit guess endpoint
         fetch(`/api/room/guess?guess=${this.state.guess}`, { method: 'post' })
             .then((resp) => {
-                if (resp === true){
+                if (resp.ok === true){
                     this.props.gameOver(true)
                 } else {
                     this.props.gameOver(false)

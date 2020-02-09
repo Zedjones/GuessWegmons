@@ -3,39 +3,24 @@ import { Message } from './Message';
 
 export class History extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = { guesses: [] }
-    }
-
-
-    addMessage(player, question, answer) {
-        let currGuess = this.state.guesses;
-        currGuess.push({
-            "player" : player,
-            "question" : question,
-            "answer" : answer
-        });
-        this.setState(currGuess);
-    }
-
-
-    createMessage(message) {
-        return <Message player={message.player} question={message.question} answer={message.answer}></Message>
-    }
-
-
-    createMessages(messages) {
-        return messages.map(message => {
-            this.createMessage(message);
-        });
-    }
 
     render() {
         return (
-            <div className="center">
-                {this.createMessages(this.state.guesses)}
+            <div style={historyStyle}> 
+            {/* <p>ASDASDASD</p> */}
+                <ol>{this.props.questions && this.props.questions.map((val, i) => {return <li key={i}><Message player={val.player} question={val.question} answer={val.answer.toString()}></Message></li>;})}</ol>
+                {/* .map((val) => {
+                    return <Message player={val.player} question={val.question} answer={val.answer}></Message>;
+                })} */}
             </div>
         );
     }
+}
+
+const historyStyle = {
+    width: '100%',
+    height: '400px',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    overflowY: 'scroll'
 }

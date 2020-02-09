@@ -1,6 +1,13 @@
-/* Provide sufficient contrast against white background */
 .center {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
+
+@media screen and (min-width: 1200px) {
+    .split {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+    }
+}
+

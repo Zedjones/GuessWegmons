@@ -8,8 +8,7 @@ export class Message extends Component {
     render() {
         return (
             <div>
-                <h4>{this.props.player} asked: {this.props.question}</h4>
-                <h4>Answer: {this.props.answer}</h4>
+                <p><strong>Player {this.props.player} Asked:</strong> {this.props.question} <strong>Answer:</strong> {this.props.answer}</p>
             </div>
         )
     }

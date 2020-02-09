@@ -16,12 +16,15 @@ export class GameCard extends Component {
     }
 
     render() {
-        var cs = {}
+        var markedStyle = {}
         if (this.state.marked)
-            cs = { background: '#aaa' }
+            markedStyle = { background: '#aaa' }
+        var highlightStyle = {}
+        if (this.props.highlight)
+            highlightStyle = { border: '1px solid #006de9' }
         return (
             <div>
-                <Card style={cardStyle, cs} onClick={this.toggle}>
+                <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
                     <CardImg top width="100%" src={this.props.img} alt={this.props.name} />
                     <CardBody>
                         <CardTitle style={titleStyle}>{this.props.name}</CardTitle>
