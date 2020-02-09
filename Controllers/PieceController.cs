@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
-using GuessWegmons.PokeApi;
 using GuessWegmons.Models;
+using GuessWegmons.Services;
 
 namespace GuessWegmons.Controllers
 {
@@ -11,17 +11,18 @@ namespace GuessWegmons.Controllers
     [Route("api/[controller]")]
     public class PieceController : ControllerBase
     {
-        RetrievePokemon retrievePokemon;
+        StorageService storageService;
 
-        public PieceController(RetrievePokemon retrievePokemon)
+        public PieceController(StorageService storageService)
         {
-            this.retrievePokemon = retrievePokemon;
+            this.storageService = storageService;
         }
 
-        public async Task<IEnumerable<PokemonDto>> GetPieces()
+        public IEnumerable<PokemonDto> GetPieces()
         {
-            var pokeList = await retrievePokemon.CreateList();
-            return pokeList.Select(pokemon => new PokemonDto(pokemon));
+            var roomName = HttpContext.Session.GetString("roomName");
+            var room = storageService.GetRoom(roomName);
+            return room.PokemonDtos;
         }
     }
 }

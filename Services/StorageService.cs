@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using GuessWegmons.Models;
+using GuessWegmons.PokeApi;
 using System.Linq;
 using System;
 using Microsoft.Extensions.Logging;
@@ -25,15 +27,17 @@ namespace GuessWegmons.Services
         /// Stored random object for generating a hex string.
         /// </summary>
         private static Random random = new Random();
+        private RetrievePokemon retrievePokemon;
 
         /// <summary>
         /// Create a new Storage Service.
         /// </summary>
         /// <param name="logger">Logger</param>
-        public StorageService(ILogger<StorageService> logger)
+        public StorageService(ILogger<StorageService> logger, RetrievePokemon retrievePokemon)
         {
             rooms = new ConcurrentBag<Room>();
             this.logger = logger;
+            this.retrievePokemon = retrievePokemon;
         }
 
         /// <summary>
@@ -46,12 +50,15 @@ namespace GuessWegmons.Services
             string roomName = GetRandomHexNumber(6);
             while (rooms.Any(room => room.Name.Equals(roomName)))
                 roomName = GetRandomHexNumber(6);
-            rooms.Add(new Room()
+            var newRoom = new Room()
             {
                 Name = roomName,
                 Player1Session = playerId,
-                Player2Session = null
-            });
+                Player2Session = null,
+                PokemonDtos = new List<PokemonDto>()
+            };
+            newRoom.CreatePokemonList(retrievePokemon);
+            rooms.Add(newRoom);
             logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
         }
