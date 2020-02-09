@@ -22,7 +22,7 @@ namespace GuessWegmons.Controllers
         /// <summary>
         /// Storage service object for accessing Room info.
         /// </summary>
-        public StorageService storageService;
+        private StorageService storageService;
 
         /// <summary>
         /// Create a Guess Controller object.
@@ -41,7 +41,7 @@ namespace GuessWegmons.Controllers
         /// <param name="guess">Guess to check</param>
         /// <param name="player">Player making the guess (1 = p1, 2 = p2)</param>
         [HttpPost]
-        public void MakeGuess([FromQuery(Name = "guess")] string guess)
+        public ActionResult<bool> MakeGuess([FromQuery(Name = "guess")] string guess)
         {
             var player = HttpContext.Session.GetInt32("player").Value;
             var room = storageService.GetRoom(HttpContext.Session.GetString("roomName"));
@@ -51,22 +51,29 @@ namespace GuessWegmons.Controllers
                 if (player == 1)
                 {
                     if (room.Player2Answer.Equals(guess))
+                    {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player2Answer}', guess was correct!");
-                    else
-                        logger.LogInformation($"Guess '{guess}' != Answer '{room.Player2Answer}', guess was incorrect!");
+                        return Ok(true);
+                    }
+                    logger.LogInformation($"Guess '{guess}' != Answer '{room.Player2Answer}', guess was incorrect!");
+                    return Ok(false);
                 }
                 // If player is 2, verify their guess = number 1's correct answer
                 else
                 {
                     if (room.Player1Answer.Equals(guess))
+                    {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player1Answer}', guess was correct!");
-                    else
-                        logger.LogInformation($"Guess '{guess}' != Answer '{room.Player1Answer}', guess was incorrect!");
+                        return Ok(true); 
+                    }  
+                    logger.LogInformation($"Guess '{guess}' != Answer '{room.Player1Answer}', guess was incorrect!");
+                    return Ok(false);
                 }
             }
             else
             {
                 logger.LogError($"Room '{room}' was null. Guess entry failed.");
+                return false;
             }
         }
     }
