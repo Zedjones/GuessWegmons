@@ -8,13 +8,12 @@ export class Board extends Component {
     }
 
     componentDidMount() {
-        // TODO endpoint board info..?
-        fetch('')
+        fetch('/api/piece')
             .then((resp) => {
                 return resp.json()
             })
             .then((resp) => {
-                // TODO what is good or bad?
+                this.setState({board: resp})
                 console.log(resp)
             })
     }
@@ -23,7 +22,11 @@ export class Board extends Component {
         if (this.state.boardInfo) {
             return (
                 <div>
-                    board
+                    <GameCard img={this.state.board[0].pictureURL} name={this.state.board[0].name}></GameCard>
+                    <GameCard img={this.state.board[1].pictureURL} name={this.state.board[1].name}></GameCard>
+                    <GameCard img={this.state.board[2].pictureURL} name={this.state.board[2].name}></GameCard>
+                    <GameCard img={this.state.board[3].pictureURL} name={this.state.board[3].name}></GameCard>
+                    <GameCard img={this.state.board[4].pictureURL} name={this.state.board[4].name}></GameCard>
                 </div>
             )
         } else {

@@ -7,35 +7,32 @@ export class Home extends Component {
     static displayName = Home.name;
     constructor(props) {
         super(props)
-        this.state = {showAlert: false}
+        this.state = { showAlert: false }
 
-        
+
         this.joinGame = this.joinGame.bind(this)
     }
 
     componentDidMount() {
-        fetch('/api/room', {method: 'get'})
-        .then((resp) => {
-            if (!resp.ok)
-                throw Error("")
-            return resp.json()
-        })
-        .then((resp) => {
-            console.log(resp)
-            this.joinGame(resp.id)
-        })
-        .catch((error) => {
-            this.setState({codeErr: "Something went wrong. Try again later.", showAlert: true})
-        })
+        fetch('/api/room', { method: 'get' })
+            .then((resp) => {
+                if (!resp.ok)
+                    throw Error('')
+                return resp.json()
+            })
+            .then((resp) => {
+                console.log(resp)
+                this.joinGame(resp.name)
+            })
+            .catch((err) => { return })
     }
 
     joinGame(code) {
-        this.setState({inGame: true})
         window.location = `/game/:${code}`
     }
 
     render() {
-        const alertStyle = (this.state.showAlert) ? {display: 'block'} : {display: 'none'}
+        const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
         return (
             <div className="center">
                 <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>

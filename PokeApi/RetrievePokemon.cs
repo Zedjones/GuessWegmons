@@ -62,6 +62,13 @@ namespace GuessWegmons.PokeApi
                 var resourceTask = pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[i]);
                 resourceTask.Wait();
                 var newPoke = resourceTask.Result;
+                while(newPoke.Sprites.FrontDefault is null)
+                {
+                    var newIndex = PickPokemon(allPokemonList.Count, false);
+                    resourceTask = pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[newIndex]);
+                    resourceTask.Wait();
+                    newPoke = resourceTask.Result;
+                }
                 pokemon.Add(newPoke);
                 logger.LogInformation($"Pokemon '{newPoke.Name}' added to board.");
             });
@@ -73,14 +80,18 @@ namespace GuessWegmons.PokeApi
         /// </summary>
         /// <param name="size">Size of the list</param>
         /// <returns>Number for the Pokemon</returns>
-        public void PickPokemon(int size)
+        public int PickPokemon(int size, bool addToUsed = true)
         {
             var num = random.Next(0, size - 1);
             // Make sure number is unique
             while (usedPokemon.Contains(num))
                 num = random.Next(0, size - 1);
-            usedPokemon.Add(num);
+            if (addToUsed)
+            {
+                usedPokemon.Add(num);
+            }
             logger.LogInformation($"Pokemon at Id '{num}' expected to be added to board.");
+            return num;
         }
     }
 }
