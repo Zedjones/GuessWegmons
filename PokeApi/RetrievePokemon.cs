@@ -1,7 +1,9 @@
 using System;
 using PokeApiNet;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 
 namespace GuessWegmons.PokeApi
@@ -46,18 +48,23 @@ namespace GuessWegmons.PokeApi
         /// Create and send a full list of Pokemon.
         /// </summary>
         /// <returns>List of Pokemon</returns>
-        public async Task<List<Pokemon>> CreateList()
+        public async Task<ConcurrentBag<Pokemon>> CreateList()
         {
-            List<Pokemon> pokemon = new List<Pokemon>();
+            ConcurrentBag<Pokemon> pokemon = new ConcurrentBag<Pokemon>();
             var allPokemonList = await pokeClient.GetNamedResourcePageAsync<Pokemon>(Int32.MaxValue, 0);
-        
+
             for (int i = 0; i < 25; i++)
             {
-                var index = PickPokemon(allPokemonList.Count);
-                var newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[index]);
+                PickPokemon(allPokemonList.Count);
+            }
+            Parallel.ForEach(usedPokemon, i =>
+            {
+                var resourceTask = pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[i]);
+                resourceTask.Wait();
+                var newPoke = resourceTask.Result;
                 pokemon.Add(newPoke);
                 logger.LogInformation($"Pokemon '{newPoke.Name}' added to board.");
-            }
+            });
             return pokemon;
         }
 
@@ -66,7 +73,7 @@ namespace GuessWegmons.PokeApi
         /// </summary>
         /// <param name="size">Size of the list</param>
         /// <returns>Number for the Pokemon</returns>
-        public int PickPokemon(int size)
+        public void PickPokemon(int size)
         {
             var num = random.Next(0, size - 1);
             // Make sure number is unique
@@ -74,7 +81,6 @@ namespace GuessWegmons.PokeApi
                 num = random.Next(0, size - 1);
             usedPokemon.Add(num);
             logger.LogInformation($"Pokemon at Id '{num}' expected to be added to board.");
-            return num;
         }
     }
 }
