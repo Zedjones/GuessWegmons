@@ -9,6 +9,7 @@ export class Answer extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.yes = this.yes.bind(this)
         this.no = this.no.bind(this)
+        this.submit = this.submit.bind(this)
     }
 
     handleChange(event) {
@@ -16,25 +17,22 @@ export class Answer extends Component {
     }
 
     yes() {
-        fetch('/api/message/answer', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({'answer': true})
-        })
-        .then((resp) => {
-            return
-        })
+        this.setState({choice: true})
+        this.submit()
     }
 
     no() {
+        this.setState({choice: false})
+        this.submit()
+    }
+
+    submit() {
         fetch('/api/message/answer', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
               },
-            body: JSON.stringify({'answer': false})
+            body: JSON.stringify({'answer': this.state.choice})
         })
         .then((resp) => {
             return

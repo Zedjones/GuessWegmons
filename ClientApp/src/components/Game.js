@@ -16,6 +16,7 @@ export class Game extends Component {
         this.boardLoaded = this.boardLoaded.bind(this)
         this.latestQuestion = this.latestQuestion.bind(this)
         this.askedQuestion = this.askedQuestion.bind(this)
+        this.gameOver = this.gameOver.bind(this)
     }
 
     componentDidMount() {
@@ -36,10 +37,10 @@ export class Game extends Component {
                     this.state.playersReady = true
                 }
                 // my turn?
-                if (resp.myTurn){
+                if (resp.myTurn) {
                     this.setState({ myTurn: true }) // for now yes
                 } else {
-                    this.setState({questionOverride: false, myTurn: false})
+                    this.setState({ questionOverride: false, myTurn: false, gameOver: false })
                 }
 
                 // has question been asked?
@@ -55,6 +56,7 @@ export class Game extends Component {
         fetch('/api/message/question', { method: 'get' })
             .then((resp) => {
                 if (resp == null) {
+                    this.setState({ latestQuestion: null, latestAnswer: null })
                     throw Error('')
                 } else {
                     return resp.json()
@@ -64,7 +66,7 @@ export class Game extends Component {
                 console.log(resp)
                 this.setState({ latestQuestion: resp.question, latestAnswer: resp.answer })
             })
-            .catch((err) => {return})
+            .catch((err) => { return })
     }
 
     boardLoaded() {
@@ -75,20 +77,30 @@ export class Game extends Component {
         this.setState({ questionOverride: true })
     }
 
+    gameOver(won) {
+        if (won) {
+            this.setState({ gameOver: "Correct! You win!"})
+        } else {
+            this.setState({ gameOver: "Wrong. Wait for opponent's question."})
+        }
+    }
+
     render() {
         var loaded = this.state.boardLoaded
         const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
-        var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion}></Question> : <div></div>
-        var answer = (!this.state.myTurn && this.state.latestQuestion != null && this.state.playersReady) ? <Answer question={this.state.latestQuestion}></Answer> : <div></div>
-        return (
-            <div>
-                <p>Room Number: <strong>{this.state.code}</strong></p>
-                <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
-                <Board boardLoaded={this.boardLoaded}></Board>
-                <History boardLoaded={loaded}></History>
-                {question}
-                {answer}
-            </div>
-        )
+        var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion} gameOver={this.gameOver}></Question> : <div></div>
+        var answer = (!this.state.myTurn && this.state.latestQuestion && this.state.playersReady) ? <Answer question={this.state.latestQuestion}></Answer> : <div></div>
+        var gameover = (this.state.gameOver) ? <Alert color="primary">{this.state.gameOver}</Alert> : <div></div>
+            return (
+                <div>
+                    <p>Room Number: <strong>{this.state.code}</strong></p>
+                    <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
+                    {gameover}
+                    <Board boardLoaded={this.boardLoaded}></Board>
+                    <History boardLoaded={loaded}></History>
+                    {question}
+                    {answer}
+                </div>
+            )
     }
 }
