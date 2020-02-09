@@ -66,6 +66,9 @@ namespace GuessWegmons.Services
                 PlayerWon = null
             };
             newRoom.CreatePokemonList(retrievePokemon);
+            Random rnd = new Random();
+            newRoom.Player1Answer = newRoom.PokemonDtos[rnd.Next(0, 25)].Name;
+            newRoom.Player2Answer = newRoom.PokemonDtos[rnd.Next(0, 25)].Name;
             rooms.Add(newRoom);
             logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
@@ -136,7 +139,7 @@ namespace GuessWegmons.Services
         /// Add a new question to a room.
         /// </summary>
         /// <param name="roomName">Name of the room</param>
-        /// <param name="question"></param>
+        /// <param name="question">Question to add</param>
         public void AddQuestion(string roomName, QuestionAnswer question)
         {
             Room roomToUpdate;
@@ -153,10 +156,10 @@ namespace GuessWegmons.Services
         }
 
         /// <summary>
-        /// Add a new question to a room.
+        /// Add a new answer to a room.
         /// </summary>
         /// <param name="roomName">Name of the room</param>
-        /// <param name="answer"></param>
+        /// <param name="answer">Answer to add</param>
         public void AddAnswer(string roomName, QuestionAnswer answer)
         {
             Room roomToUpdate;

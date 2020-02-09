@@ -39,7 +39,7 @@ namespace GuessWegmons.Controllers
             }
             var roomName = HttpContext.Session.GetString("roomName");
             var room = storageService.GetRoom(roomName);
-            if(room is null)
+            if (room is null)
             {
                 return BadRequest();
             }

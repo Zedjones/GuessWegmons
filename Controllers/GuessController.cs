@@ -74,7 +74,7 @@ namespace GuessWegmons.Controllers
             }
             else
             {
-                logger.LogError($"Room '{room}' was null. Guess entry failed.");
+                logger.LogError($"Room '{room}' was null, guess entry failed.");
                 return false;
             }
         }

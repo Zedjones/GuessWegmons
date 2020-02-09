@@ -43,7 +43,15 @@ namespace GuessWegmons.Models
         /// Pokemon data.
         /// </summary>
         public List<PokemonDto> PokemonDtos { get; set; }
+        
+        /// <summary>
+        /// Player's turn.
+        /// </summary>
         public int Turn { get; set; }
+
+        /// <summary>
+        /// Player that has won.
+        /// </summary>
         public int? PlayerWon { get; set; }
 
         /// <summary>

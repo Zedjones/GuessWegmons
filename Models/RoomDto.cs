@@ -8,14 +8,19 @@ namespace GuessWegmons.Models
     public class RoomDto
     {
         /// <summary>
-        /// Whether or not player 1 is in the game
+        /// Whether or not player 1 is in the game.
         /// </summary>
         public bool Player1In { get; set; }
 
         /// <summary>
-        /// Whether or not player 2 is in the game
+        /// Whether or not player 2 is in the game.
         /// </summary>
         public bool Player2In { get; set; }
+
+        /// <summary>
+        /// The name of the correct Pokemon associated for a player.
+        /// </summary>
+        public string RightAnswer { get; set; }
 
         /// <summary>
         /// List of the questions and their answers that have been in this room so far.
@@ -41,6 +46,8 @@ namespace GuessWegmons.Models
         {
             Player1In = fromRoom.Player1Session != null;
             Player2In = fromRoom.Player2Session != null;
+            
+            // Set questions and answers, new if needed
             if (fromRoom.questionsAndAnswers is null)
             {
                 questionsAndAnswers = new Stack<QuestionAnswer>();
@@ -49,13 +56,18 @@ namespace GuessWegmons.Models
             {
                 questionsAndAnswers = fromRoom.questionsAndAnswers;
             }
+
+            // Set turn and correct answer based on which player it is
             if(playerId == 1)
             {
                 MyTurn = fromRoom.Turn % 2 == 1;
+                RightAnswer = fromRoom.Player1Answer;
             }
             else {
                 MyTurn = fromRoom.Turn % 2 == 0;
+                RightAnswer = fromRoom.Player2Answer;
             }
+
             Name = fromRoom.Name;
         }
     }
