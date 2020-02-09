@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
-function Message(props){
-    return (
-        <div>
-            <h4>{props.player} asks: {props.question}</h4>
-            <h4>{props.answer}</h4>
-        </div>
-    )
+export class Message extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <div>
+                <h4>{this.props.player} asks: {this.props.question}</h4>
+                <h4>{this.props.answer}</h4>
+            </div>
+        )
+    }
 }
