@@ -30,7 +30,6 @@ export class Game extends Component {
                 if (resp.player1In && resp.player2In) {
                     this.state.playersReady = true
                 }
-                console.log(resp)
             })
             .catch((error) => {
                 try { clearInterval(this.state.playerCheckInterval) }

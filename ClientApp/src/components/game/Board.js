@@ -2,20 +2,37 @@ import React, { Component } from 'react';
 import { GameCard } from './GameCard';
 
 export class Board extends Component {
+    static timeoutCheck = 500
     constructor(props) {
         super(props)
         this.state = { board: null }
+        this.getBoard = this.getBoard.bind(this)
     }
 
     componentDidMount() {
+        var boardcheck = setInterval(this.getBoard, Board.timeoutCheck)
+        this.setState({ boardCheckInterval: boardcheck })
+    }
+
+    getBoard() {
         fetch('/api/piece')
             .then((resp) => {
                 return resp.json()
             })
             .then((resp) => {
-                this.setState({board: resp})
-                console.log(resp)
+                if (resp != []) {
+                    this.setState({ board: resp })
+                    this.clearBoardInterval()
+                }
             })
+            .catch((err) => {
+                this.clearBoardInterval()
+            })
+    }
+
+    clearBoardInterval() {
+        try { clearInterval(this.state.boardCheckInterval) }
+        catch (err) { console.log(err) }
     }
 
     render() {
