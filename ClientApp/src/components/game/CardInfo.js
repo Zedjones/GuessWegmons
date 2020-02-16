@@ -35,6 +35,7 @@ export class CardInfo extends Component {
         
         return (
             <div>
+                <h4>{this.props.val.name}</h4>
                 <div>{this.props.val.types.map((type, i) => { 
                     switch(type){
                         case "bug":
@@ -76,10 +77,10 @@ export class CardInfo extends Component {
                     }
                 })}</div>
                 <p>Generation: {this.props.val.generation}</p>
+                <button>Guess this Pokemon?</button>
             </div>
         )
     }
-
 }
 
 const cardStyle = {
