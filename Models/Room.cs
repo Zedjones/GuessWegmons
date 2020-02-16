@@ -55,6 +55,8 @@ namespace GuessWegmons.Models
         /// </summary>
         public int? PlayerWon { get; set; }
 
+        public bool GameOver => !(PlayerWon is null);
+
         /// <summary>
         /// Create the list of Pokemon.
         /// </summary>
