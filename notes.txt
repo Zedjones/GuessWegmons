@@ -14,4 +14,4 @@ Display
 
 1. Display which pokemon is your correct answer (besides just the blue outline)
 
-2. Show when waiting for player to connect or waiting for your turn
+2. Fit board based on screen size?

@@ -33,7 +33,8 @@ namespace GuessWegmons.Models
         /// <param name="fromMon">Pokemon object is based on</param>
         public PokemonDto(PokeApiNet.Pokemon fromMon, PokeApiNet.PokemonSpecies fromSpecies)
         {
-            Name = fromSpecies.Names.Where(name => name.Language.Name == "en").FirstOrDefault().Name;
+            Name = fromMon.Name.Contains("-mega") ? "Mega " : "";
+            Name += fromSpecies.Names.Where(name => name.Language.Name == "en").FirstOrDefault().Name;
             Generation = Int32.Parse(new Uri(fromSpecies.Generation.Url).Segments.Last().TrimEnd('/'));
             PictureURL = fromMon.Sprites.FrontDefault;
             Types = fromMon.Types.Select(type => type.Type.Name).ToList();
