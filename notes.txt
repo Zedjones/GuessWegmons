@@ -1,8 +1,6 @@
 Errors
 
-1. Mega pokemon and normal pokemon have the same name
-
-2. Final guess is always displayed as correct answer (not in backend)
+1. Final guess is always displayed as correct answer (not in backend)
 
 
 TODO
@@ -11,9 +9,9 @@ TODO
 
 2. Better way to select a guess rather than typing it in? 
 
+3. Hard vs easy mode ?????
+
 
 Display
 
 1. Display which pokemon is your correct answer (besides just the blue outline)
-
-2. Fit board based on screen size?
