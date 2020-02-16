@@ -26,15 +26,8 @@ export class CardInfo extends Component {
     }
 
     render() {
-        var markedStyle = {}
-        if (this.state.marked)
-            markedStyle = { background: '#aaa' }
-        var highlightStyle = {}
-        if (this.props.highlight)
-            highlightStyle = { border: '1px solid #006de9' }
-        
         return (
-            <div>
+            <div style={popupStyling}>
                 <h4>{this.props.val.name}</h4>
                 <div>{this.props.val.types.map((type, i) => { 
                     switch(type){
@@ -83,10 +76,9 @@ export class CardInfo extends Component {
     }
 }
 
-const cardStyle = {
-    margin: '5px'
-}
-
-const titleStyle = {
-    textAlign: 'center'
+const popupStyling = { 
+    cursor: 'pointer',
+    border: 'none',
+    alignContent: 'center',
+    padding: '10px'
 }
