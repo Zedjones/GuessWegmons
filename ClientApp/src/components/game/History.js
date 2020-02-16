@@ -7,8 +7,7 @@ export class History extends Component {
     render() {
         return (
             <div style={historyStyle}> 
-            {/* <p>ASDASDASD</p> */}
-                <ol>{this.props.questions && this.props.questions.map((val, i) => {
+                <ol>{this.props.questions && this.props.questions.slice(0).reverse().map((val, i) => {
                     let ans = "Unanswered"
                     if(val.answer === true)
                         ans = "Yes"
@@ -16,9 +15,6 @@ export class History extends Component {
                         ans = "No"
                     return <li key={i}><Message player={val.player} question={val.question} answer={ans}></Message></li>;
                     })}</ol>
-                {/* .map((val) => {
-                    return <Message player={val.player} question={val.question} answer={val.answer}></Message>;
-                })} */}
             </div>
         );
     }
