@@ -70,7 +70,7 @@ export class CardInfo extends Component {
                     }
                 })}</div>
                 <p>Generation: {this.props.val.generation}</p>
-                <button>Guess this Pokemon?</button>
+                <button style={buttonStyle}>Guess this Pokemon?</button>
             </div>
         )
     }
@@ -81,4 +81,10 @@ const popupStyling = {
     border: 'none',
     alignContent: 'center',
     padding: '10px'
+}
+
+const buttonStyle = {
+    border: '2px solid #62c1f5',
+    borderRadius: '15px',
+    padding: '5px'
 }
