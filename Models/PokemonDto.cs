@@ -7,6 +7,7 @@ namespace GuessWegmons.Models
     /// <summary>
     /// Stores information/data about a Pokemon.
     /// </summary>
+    [Serializable]
     public class PokemonDto
     {
         /// <summary>
