@@ -72,6 +72,8 @@ namespace GuessWegmons.PokeApi
             var pokemon = await Task.WhenAll(pokemonTasks);
             stopwatch.Stop();
             logger.LogInformation($"Fetching took {stopwatch.Elapsed}");
+            //FIXME: This is still broken if two rooms are generated at the same time
+            usedPokemon.Clear();
             return pokemon;
         }
 
