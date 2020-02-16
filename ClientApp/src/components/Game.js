@@ -4,6 +4,7 @@ import { History } from './game/History';
 import { Board } from './game/Board';
 import { Question } from './game/Question';
 import { Answer } from './game/Answer';
+import { LeaveGame } from './game/LeaveGame';
 
 export class Game extends Component {
     static timeoutCheck = 2000
@@ -40,7 +41,7 @@ export class Game extends Component {
                 }
                 // my turn?
                 if (resp.myTurn) {
-                    this.setState({ myTurn: true, latestQuestion: null, latestAnswer: null }) 
+                    this.setState({ myTurn: true, latestQuestion: null, latestAnswer: null })
                 } else {
                     this.setState({ questionOverride: false, myTurn: false, gameOver: false })
                 }
@@ -90,7 +91,10 @@ export class Game extends Component {
         var gameover = (this.state.gameOver) ? <Alert color="primary">{this.state.gameOver}</Alert> : <div></div>
         return (
             <div>
-                <p>Room Number: <strong>{this.state.code}</strong></p>
+                <div style={flexStyle}>
+                    <p>Room Number: <strong>{this.state.code}</strong></p>
+                    <LeaveGame></LeaveGame>
+                </div>
                 <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
                 {gameover}
                 <div className="split">
@@ -106,4 +110,9 @@ export class Game extends Component {
             </div>
         )
     }
+}
+
+const flexStyle = {
+    display: 'flex',
+    marginBottom: '20px'
 }

@@ -31,7 +31,7 @@ export class GameCard extends Component {
                     <Popup on="hover" closeOnDocumentClick trigger={<button style={buttonStyle}><img src={Dots}></img></button>} position="right">
                         <CardInfo style='padding: 5px' val={this.props.val} />
                     </Popup>
-                    <CardImg top width="100%" src={this.props.val.pictureURL} alt={this.props.val.name} />
+                    <CardImg top width="100%" style={imgStyle} src={this.props.val.pictureURL} alt={this.props.val.name} />
                     <CardBody>
                         <CardTitle style={titleStyle}>{this.props.val.name}</CardTitle>
                     </CardBody>
@@ -42,7 +42,9 @@ export class GameCard extends Component {
 }
 
 const cardStyle = {
-    margin: '5px'
+    margin: '5px',
+    padding: '10px',
+    height: '16em'
 }
 
 const titleStyle = {
@@ -56,3 +58,10 @@ const buttonStyle = {
     border: 'none',
     textAlign: 'right'
 }
+const imgStyle = {
+    margin: 'auto',
+    height: '120px',
+    width: '120px',
+    opacity: '1.0'
+}
+    

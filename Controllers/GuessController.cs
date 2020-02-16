@@ -57,6 +57,7 @@ namespace GuessWegmons.Controllers
                         return Ok(true);
                     }
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player2Answer}', guess was incorrect!");
+                    storageService.IncrementTurn(room.Name);
                     return Ok(false);
                 }
                 // If player is 2, verify their guess = number 1's correct answer
@@ -69,6 +70,7 @@ namespace GuessWegmons.Controllers
                         return Ok(true); 
                     }  
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player1Answer}', guess was incorrect!");
+                    storageService.IncrementTurn(room.Name);
                     return Ok(false);
                 }
             }
