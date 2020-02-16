@@ -48,9 +48,9 @@ namespace GuessWegmons.PokeApi
         /// Create and send a full list of Pokemon.
         /// </summary>
         /// <returns>List of Pokemon</returns>
-        public async Task<ConcurrentBag<Pokemon>> CreateList()
+        public async Task<ConcurrentBag<(Pokemon, PokemonSpecies)>> CreateList()
         {
-            ConcurrentBag<Pokemon> pokemon = new ConcurrentBag<Pokemon>();
+            var pokemon = new ConcurrentBag<(Pokemon, PokemonSpecies)>();
             var allPokemonList = await pokeClient.GetNamedResourcePageAsync<Pokemon>(Int32.MaxValue, 0);
 
             for (int i = 0; i < 25; i++)
@@ -69,7 +69,9 @@ namespace GuessWegmons.PokeApi
                     resourceTask.Wait();
                     newPoke = resourceTask.Result;
                 }
-                pokemon.Add(newPoke);
+                var newPokeSpeciesTask = pokeClient.GetResourceAsync<PokemonSpecies>(newPoke.Species);
+                newPokeSpeciesTask.Wait();
+                pokemon.Add((newPoke, newPokeSpeciesTask.Result));
                 logger.LogInformation($"Pokemon '{newPoke.Name}' added to board.");
             });
             return pokemon;
