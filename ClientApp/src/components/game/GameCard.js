@@ -5,6 +5,7 @@ import {
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
 import { CardInfo } from './CardInfo';
+import Dots from './Types/dots.png';
 
 export class GameCard extends Component {
     constructor(props) {
@@ -27,18 +28,17 @@ export class GameCard extends Component {
         return (
             <div>
                 <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
+                    <Popup on="hover" closeOnDocumentClick trigger={<button style={buttonStyle}><img src={Dots}></img></button>} position="right">
+                        <CardInfo style='padding: 5px' val={this.props.val} />
+                    </Popup>
                     <CardImg top width="100%" src={this.props.val.pictureURL} alt={this.props.val.name} />
                     <CardBody>
                         <CardTitle style={titleStyle}>{this.props.val.name}</CardTitle>
-                        <Popup on="focus" closeOnDocumentClick trigger={<button>. . .</button>} position="right">
-                            <CardInfo val={this.props.val} />
-                        </Popup>
                     </CardBody>
                 </Card>
             </div>
         )
     }
-
 }
 
 const cardStyle = {
@@ -47,4 +47,12 @@ const cardStyle = {
 
 const titleStyle = {
     textAlign: 'center'
+}
+
+const buttonStyle = { 
+    paddingTop: '5px' ,  
+    background: 'transparent',
+    cursor: 'pointer',
+    border: 'none',
+    textAlign: 'right'
 }
