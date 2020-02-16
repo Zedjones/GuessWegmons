@@ -8,7 +8,14 @@ export class History extends Component {
         return (
             <div style={historyStyle}> 
             {/* <p>ASDASDASD</p> */}
-                <ol>{this.props.questions && this.props.questions.map((val, i) => {return <li key={i}><Message player={val.player} question={val.question} answer={val.answer.toString()}></Message></li>;})}</ol>
+                <ol>{this.props.questions && this.props.questions.map((val, i) => {
+                    let ans = "Unanswered"
+                    if(val.answer === true)
+                        ans = "Yes"
+                    else if (val.answer === false)
+                        ans = "No"
+                    return <li key={i}><Message player={val.player} question={val.question} answer={ans}></Message></li>;
+                    })}</ol>
                 {/* .map((val) => {
                     return <Message player={val.player} question={val.question} answer={val.answer}></Message>;
                 })} */}

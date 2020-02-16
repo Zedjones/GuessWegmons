@@ -22,7 +22,7 @@ export class Question extends Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'question': this.state.textVal })
+            body: JSON.stringify({ 'question': this.state.textVal, 'answer': null })
         })
             .then((resp) => {
                 return
