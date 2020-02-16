@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using GuessWegmons.Models;
 using GuessWegmons.PokeApi;
+using GuessWegmons.Extensions;
 using System.Linq;
 using System;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,7 @@ namespace GuessWegmons.Services
         /// <summary>
         /// All rooms currently being used.
         /// </summary>
-        public ConcurrentBag<Room> rooms;
+        public ConcurrentDictionary<string, Room> rooms;
 
         /// <summary>
         /// Stored random object for generating a hex string.
@@ -40,7 +41,7 @@ namespace GuessWegmons.Services
         /// <param name="retrievePokemon">Retrieve Pokemon object for creating Pokemon</param>
         public StorageService(ILogger<StorageService> logger, RetrievePokemon retrievePokemon)
         {
-            rooms = new ConcurrentBag<Room>();
+            rooms = new ConcurrentDictionary<string, Room>();
             this.logger = logger;
             this.retrievePokemon = retrievePokemon;
         }
@@ -53,7 +54,7 @@ namespace GuessWegmons.Services
         public string CreateRoom(string playerId)
         {
             string roomName = GetRandomHexNumber(6);
-            while (rooms.Any(room => room.Name.Equals(roomName)))
+            while (rooms.Any(room => room.Value.Name.Equals(roomName)))
                 roomName = GetRandomHexNumber(6);
             var newRoom = new Room()
             {
@@ -66,7 +67,7 @@ namespace GuessWegmons.Services
                 PlayerWon = null
             };
             newRoom.CreatePokemonList(retrievePokemon);
-            rooms.Add(newRoom);
+            rooms[roomName] = newRoom;
             logger.LogInformation($"Room created with name '{roomName}'.");
             return roomName;
         }
@@ -79,12 +80,13 @@ namespace GuessWegmons.Services
         public bool IncrementTurn(string roomName)
         {
             Room roomToUpdate;
-            if (rooms.TryTake(out roomToUpdate))
+            rooms.TryGetValue(roomName, out roomToUpdate);
+            var modifiedRoom = roomToUpdate.DeepClone();
+            modifiedRoom.Turn++;
+            if (rooms.TryUpdate(roomName, roomToUpdate, modifiedRoom))
             {
-                roomToUpdate.Turn++;
-                rooms.Add(roomToUpdate);
                 logger.LogWarning($"Room '{roomName}' turn incremented.");
-                return true;            
+                return true;
             }
             else
             {
@@ -102,10 +104,11 @@ namespace GuessWegmons.Services
         public bool AddPlayer(string roomName, string playerId)
         {
             Room roomToUpdate;
-            if (rooms.TryTake(out roomToUpdate))
+            rooms.TryGetValue(roomName, out roomToUpdate);
+            var modifiedRoom = roomToUpdate.DeepClone();
+            modifiedRoom.Player2Session = playerId;
+            if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
             {
-                roomToUpdate.Player2Session = playerId;
-                rooms.Add(roomToUpdate);
                 logger.LogInformation($"'{playerId}' successfully joined room '{roomName}'.");
                 return true;
             }
@@ -140,10 +143,11 @@ namespace GuessWegmons.Services
         public void AddQuestion(string roomName, QuestionAnswer question)
         {
             Room roomToUpdate;
-            if (rooms.TryTake(out roomToUpdate))
+            rooms.TryGetValue(roomName, out roomToUpdate);
+            var modifiedRoom = roomToUpdate.DeepClone(); 
+            modifiedRoom.questionsAndAnswers.Push(question);
+            if (rooms.TryUpdate(roomName, roomToUpdate, modifiedRoom))
             {
-                roomToUpdate.questionsAndAnswers.Push(question);
-                rooms.Add(roomToUpdate);
                 logger.LogInformation($"'{question}' successfully added to room '{roomName}'.");
             }
             else
@@ -160,12 +164,13 @@ namespace GuessWegmons.Services
         public void AddAnswer(string roomName, QuestionAnswer answer)
         {
             Room roomToUpdate;
-            if (rooms.TryTake(out roomToUpdate))
+            rooms.TryGetValue(roomName, out roomToUpdate);
+            var modifiedRoom = roomToUpdate.DeepClone();
+            var question = modifiedRoom.questionsAndAnswers.Pop();
+            question.answer = answer.answer;
+            modifiedRoom.questionsAndAnswers.Push(question);
+            if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
             {
-                var question = roomToUpdate.questionsAndAnswers.Pop();
-                question.answer = answer.answer;
-                roomToUpdate.questionsAndAnswers.Push(question);
-                rooms.Add(roomToUpdate);
                 logger.LogInformation($"'{answer}' successfully added to room '{roomName}'.");
             }
             else
@@ -181,7 +186,7 @@ namespace GuessWegmons.Services
         /// <returns>Retrieved room object</returns>
         public Room GetRoom(string roomName)
         {
-            var room = rooms.Where(room => room.Name == roomName).FirstOrDefault();
+            var room = rooms[roomName];
             return room;
         }
     }

@@ -8,6 +8,7 @@ namespace GuessWegmons.Models
     /// <summary>
     /// Store information about a Room object.
     /// </summary>
+    [Serializable]
     public class Room
     {
         /// <summary>

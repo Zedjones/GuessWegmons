@@ -1,10 +1,11 @@
-using Newtonsoft.Json;
+using System;
 
 namespace GuessWegmons.Models
 {
     /// <summary>
     /// Stores information on a question and its answer.
     /// </summary>
+    [Serializable]
     public class QuestionAnswer
     {
         /// <summary>

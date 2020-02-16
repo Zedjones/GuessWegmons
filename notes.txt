@@ -4,8 +4,6 @@ Errors
 
 2. Final guess is always displayed as correct answer (not in backend)
 
-3. Message history displaying messages in backwards order (new messages at top)
-
 
 TODO
 

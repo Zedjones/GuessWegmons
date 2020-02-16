@@ -31,7 +31,7 @@ export class NavMenu extends Component {
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <a tag={Link} target="_blank" rel="noopener noreferrer" className="text-dark" href="https://github.com/Zedjones/WhosYourMans">Github</a>
+                  <a tag={Link} target="_blank" rel="noopener noreferrer" className="text-dark" href="https://github.com/Zedjones/WhosYourMans">GitHub</a>
                 </NavItem>
               </ul>
             </Collapse>
