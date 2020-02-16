@@ -1,0 +1,25 @@
+Errors
+
+1. Mega pokemon and normal pokemon have the same name
+
+2. Answer always comes in as false and is displayed before user has a chance to actually answer
+
+3. Final guess is always displayed as correct answer (not in backend)
+
+4. Message history displaying messages in backwards order (new messages at top)
+
+
+TODO
+
+1. Ending a game, leaving a game
+
+2. Better way to select a guess rather than typing it in? 
+
+
+Display
+
+1. Display which pokemon is your correct answer (besides just the blue outline)
+
+2. Show when waiting for player to connect or waiting for your turn
+
+3. Fit board based on screen size?
