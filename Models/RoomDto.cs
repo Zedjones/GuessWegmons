@@ -37,6 +37,8 @@ namespace GuessWegmons.Models
         /// </summary>
         public bool MyTurn { get; set; }
 
+        public bool GameOver { get; set; }
+
         /// <summary>
         /// Create a Room Dto object.
         /// </summary>
@@ -46,7 +48,7 @@ namespace GuessWegmons.Models
         {
             Player1In = fromRoom.Player1Session != null;
             Player2In = fromRoom.Player2Session != null;
-            
+
             // Set questions and answers, new if needed
             if (fromRoom.questionsAndAnswers is null)
             {
@@ -58,17 +60,19 @@ namespace GuessWegmons.Models
             }
 
             // Set turn and correct answer based on which player it is
-            if(playerId == 1)
+            if (playerId == 1)
             {
                 MyTurn = fromRoom.Turn % 2 == 1;
                 RightAnswer = fromRoom.Player1Answer;
             }
-            else {
+            else
+            {
                 MyTurn = fromRoom.Turn % 2 == 0;
                 RightAnswer = fromRoom.Player2Answer;
             }
 
             Name = fromRoom.Name;
+            GameOver = fromRoom.GameOver;
         }
     }
 }
