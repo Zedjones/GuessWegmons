@@ -7,7 +7,7 @@ export class Home extends Component {
     static displayName = Home.name;
     constructor(props) {
         super(props)
-        this.state = { showAlert: false }
+        this.state = { showAlert: false, wonFrom: null, wonMessage: "" }
 
 
         this.joinGame = this.joinGame.bind(this)
@@ -25,6 +25,21 @@ export class Home extends Component {
                 this.joinGame(resp.name)
             })
             .catch((err) => { return })
+
+        const urlParams = new URLSearchParams(window.location.search)
+        let won = urlParams.get('won')
+        if (won === 'true') {
+            this.setState({ wonFrom: true })
+            this.setState({ wonMessage: "Congratulations! You Won!" })
+        }
+        else if (won === 'false') {
+            this.setState({ wonFrom: false })
+            this.setState({ wonMessage: "Sorry. You Lost." })
+        }
+        else {
+            this.setState({ wonFrom: null })
+            this.setState({ wonMessage: "" })
+        }
     }
 
     joinGame(code) {
@@ -33,9 +48,11 @@ export class Home extends Component {
 
     render() {
         const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
+        const wonStyle = (this.state.wonFrom !== null) ? { display: 'block' } : { display: 'none' }
         return (
             <div className="center">
                 <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
+                <Alert style={wonStyle} color={(this.state.wonFrom) ? "success" : "danger"}>{this.state.wonMessage}</Alert>
                 <NewRoom joinRoom={this.joinGame}></NewRoom>
                 <JoinRoom joinRoom={this.joinGame}></JoinRoom>
             </div>

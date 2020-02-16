@@ -42,8 +42,14 @@ export class Game extends Component {
                 // my turn?
                 if (resp.myTurn) {
                     this.setState({ myTurn: true, latestQuestion: null, latestAnswer: null })
+                    if (resp.gameOver) {
+                        window.location = '/?won=true'
+                    }
                 } else {
                     this.setState({ questionOverride: false, myTurn: false, gameOver: false })
+                    if (resp.gameOver) {
+                        window.location = '/?won=false'
+                    }
                 }
 
                 // has question been asked?
