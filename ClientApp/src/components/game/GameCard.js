@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import Popup from "reactjs-popup";
 import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
+import { CardInfo } from './CardInfo';
 
 export class GameCard extends Component {
     constructor(props) {
@@ -25,12 +27,12 @@ export class GameCard extends Component {
         return (
             <div>
                 <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
-                    <CardImg top width="100%" style={imgStyle} src={this.props.img} alt={this.props.name} />
+                    <CardImg top width="100%" style={imgStyle} src={this.props.val.pictureURL} alt={this.props.val.name} />
                     <CardBody>
-                        <CardTitle style={titleStyle}>{this.props.name}</CardTitle>
-                        {/* <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        <Button>Button</Button> */}
+                        <CardTitle style={titleStyle}>{this.props.val.name}</CardTitle>
+                        <Popup on="focus" closeOnDocumentClick trigger={<button>. . .</button>} position="right">
+                            <CardInfo val={this.props.val} />
+                        </Popup>
                     </CardBody>
                 </Card>
             </div>
