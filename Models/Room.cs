@@ -64,7 +64,7 @@ namespace GuessWegmons.Models
         public async void CreatePokemonList(RetrievePokemon retrievePokemon)
         {
             var pokeList = await retrievePokemon.CreateList();
-            PokemonDtos = pokeList.Select(poke => new PokemonDto(poke)).ToList();
+            PokemonDtos = pokeList.Select(poke => new PokemonDto(poke.Item1, poke.Item2)).ToList();
             Random rnd = new Random();
             Player1Answer = PokemonDtos[rnd.Next(0, 25)].Name;
             Player2Answer = PokemonDtos[rnd.Next(0, 25)].Name;
