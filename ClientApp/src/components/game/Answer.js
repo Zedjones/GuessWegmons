@@ -5,7 +5,7 @@ import { Input } from 'reactstrap';
 export class Answer extends Component {
     constructor(props) {
         super(props)
-        this.state = {textVal: ''}
+        this.state = {textVal: '', choice: null}
         this.handleChange = this.handleChange.bind(this)
         this.yes = this.yes.bind(this)
         this.no = this.no.bind(this)
@@ -18,21 +18,22 @@ export class Answer extends Component {
 
     yes() {
         this.setState({choice: true})
-        this.submit()
+        this.submit(true)
     }
 
     no() {
         this.setState({choice: false})
-        this.submit()
+        this.submit(false)
     }
 
-    submit() {
+    submit(val) {
+        console.log({'answer': val})
         fetch('/api/message/answer', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
               },
-            body: JSON.stringify({'answer': this.state.choice})
+            body: JSON.stringify({'answer': val})
         })
         .then((resp) => {
             return

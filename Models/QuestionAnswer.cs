@@ -16,7 +16,7 @@ namespace GuessWegmons.Models
         /// Answer as a bool.
         /// True = yes, false = no.
         /// </summary>
-        public bool answer { get; set; }
+        public bool? answer { get; set; }
 
         /// <summary>
         /// Which player asked the question.

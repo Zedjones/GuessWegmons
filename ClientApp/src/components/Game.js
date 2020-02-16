@@ -31,6 +31,7 @@ export class Game extends Component {
                 return resp.json()
             })
             .then((resp) => {
+                console.log('allquestions', resp.questionsAndAnswers)
                 this.setState({ history: resp.questionsAndAnswers })
                 this.setState({ rightAnswer: resp.rightAnswer })
                 // players ready?
@@ -39,7 +40,7 @@ export class Game extends Component {
                 }
                 // my turn?
                 if (resp.myTurn) {
-                    this.setState({ myTurn: true }) // for now yes
+                    this.setState({ myTurn: true, latestQuestion: null, latestAnswer: null }) 
                 } else {
                     this.setState({ questionOverride: false, myTurn: false, gameOver: false })
                 }
@@ -64,7 +65,7 @@ export class Game extends Component {
                 }
             })
             .then((resp) => {
-                console.log(resp)
+                console.log('resp', resp)
                 this.setState({ latestQuestion: resp.question, latestAnswer: resp.answer })
             })
             .catch((err) => { this.setState({ latestQuestion: null, latestAnswer: null }) })
@@ -97,7 +98,7 @@ export class Game extends Component {
                         <Board rightAnswer={this.state.rightAnswer}></Board>
                     </div>
                     <div>
-                        <History questions={this.state.history}></History>
+                        <History questions={this.state.history} latestQuestion={this.state.latestQuestion}></History>
                         {question}
                         {answer}
                     </div>
