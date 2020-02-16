@@ -27,15 +27,15 @@ export class GameCard extends Component {
             highlightStyle = { border: '1px solid #006de9' }
         return (
             <div>
-                <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
-                    <Popup on="hover" closeOnDocumentClick trigger={<button style={buttonStyle}><img src={Dots}></img></button>} position="right">
-                        <CardInfo style='padding: 5px' val={this.props.val} />
-                    </Popup>
-                    <CardImg top width="100%" style={imgStyle} src={this.props.val.pictureURL} alt={this.props.val.name} />
-                    <CardBody>
-                        <CardTitle style={titleStyle}>{this.props.val.name}</CardTitle>
-                    </CardBody>
-                </Card>
+                <Popup on="hover" closeOnDocumentClick trigger={
+                    <div>
+                        <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
+                            <CardImg top width="100%" style={imgStyle} src={this.props.val.pictureURL} alt={this.props.val.name} />
+                        </Card>
+                    </div>
+                    } position="right">
+                    <CardInfo style='padding: 5px' val={this.props.val} />
+                </Popup>
             </div>
         )
     }
@@ -43,21 +43,9 @@ export class GameCard extends Component {
 
 const cardStyle = {
     margin: '5px',
-    padding: '10px',
-    height: '16em'
+    padding: '10px'
 }
 
-const titleStyle = {
-    textAlign: 'center'
-}
-
-const buttonStyle = { 
-    paddingTop: '5px' ,  
-    background: 'transparent',
-    cursor: 'pointer',
-    border: 'none',
-    textAlign: 'right'
-}
 const imgStyle = {
     margin: 'auto',
     height: '120px',
