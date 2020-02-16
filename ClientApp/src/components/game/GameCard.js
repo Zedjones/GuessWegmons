@@ -25,7 +25,7 @@ export class GameCard extends Component {
         return (
             <div>
                 <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
-                    <CardImg top width="100%" src={this.props.img} alt={this.props.name} />
+                    <CardImg top width="100%" style={imgStyle} src={this.props.img} alt={this.props.name} />
                     <CardBody>
                         <CardTitle style={titleStyle}>{this.props.name}</CardTitle>
                         {/* <CardSubtitle>Card subtitle</CardSubtitle>
@@ -36,13 +36,22 @@ export class GameCard extends Component {
             </div>
         )
     }
-
 }
 
 const cardStyle = {
-    margin: '5px'
+    margin: '5px',
+    padding: '10px',
+    height: '16em'
 }
 
 const titleStyle = {
     textAlign: 'center'
 }
+
+const imgStyle = {
+    margin: 'auto',
+    height: '120px',
+    width: '120px',
+    opacity: '1.0'
+}
+    
