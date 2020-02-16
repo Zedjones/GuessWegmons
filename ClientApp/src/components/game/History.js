@@ -25,5 +25,6 @@ const historyStyle = {
     height: '400px',
     border: '1px solid #ccc',
     borderRadius: '5px',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    marginTop: '5px'
 }
