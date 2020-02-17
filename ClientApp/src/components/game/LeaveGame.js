@@ -11,7 +11,7 @@ export class LeaveGame extends Component {
     leave() {
         fetch('/api/room/leave', { method: 'get' })
             .then((resp) => {
-                window.location = '/'
+                window.location = '/?won=false'
             })
     }
 
