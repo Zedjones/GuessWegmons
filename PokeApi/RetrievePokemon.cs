@@ -24,11 +24,6 @@ namespace GuessWegmons.PokeApi
         private PokeApiClient pokeClient;
 
         /// <summary>
-        /// List of currently selected Pokemon.
-        /// </summary>
-        private List<int> usedPokemon;
-
-        /// <summary>
         /// Stored random object for generating a random number.
         /// </summary>
         private static Random random = new Random();
@@ -40,7 +35,6 @@ namespace GuessWegmons.PokeApi
         public RetrievePokemon(ILogger<RetrievePokemon> logger)
         {
             pokeClient = new PokeApiClient();
-            usedPokemon = new List<int>();
             this.logger = logger;
         }
 
@@ -52,17 +46,20 @@ namespace GuessWegmons.PokeApi
         {
             var allPokemonList = await pokeClient.GetNamedResourcePageAsync<Pokemon>(Int32.MaxValue, 0);
 
-            for (int i = 0; i < 25; i++)
-            {
-                PickPokemon(allPokemonList.Count);
-            }
+            var usedPokemon = PickPokemon(allPokemonList.Count, 25);
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var pokemonTasks = usedPokemon.Select(async (i) => {
+            var pokemonTasks = usedPokemon.Select(async (i) =>
+            {
                 var newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[i]);
-                while(newPoke.Sprites.FrontDefault is null)
+                while (newPoke.Sprites.FrontDefault is null)
                 {
-                    var newIndex = PickPokemon(allPokemonList.Count, false);
+                    int newIndex;
+                    do
+                    {
+                        newIndex = random.Next(0, allPokemonList.Count - 1);
+                    }
+                    while (usedPokemon.Contains(newIndex));
                     newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[newIndex]);
                 }
                 var newPokeSpecies = await pokeClient.GetResourceAsync<PokemonSpecies>(newPoke.Species);
@@ -72,8 +69,6 @@ namespace GuessWegmons.PokeApi
             var pokemon = await Task.WhenAll(pokemonTasks);
             stopwatch.Stop();
             logger.LogInformation($"Fetching took {stopwatch.Elapsed}");
-            //FIXME: This is still broken if two rooms are generated at the same time
-            usedPokemon.Clear();
             return pokemon;
         }
 
@@ -82,18 +77,19 @@ namespace GuessWegmons.PokeApi
         /// </summary>
         /// <param name="size">Size of the list</param>
         /// <returns>Number for the Pokemon</returns>
-        public int PickPokemon(int size, bool addToUsed = true)
+        private List<int> PickPokemon(int size, int capacity)
         {
-            var num = random.Next(0, size - 1);
-            // Make sure number is unique
-            while (usedPokemon.Contains(num))
-                num = random.Next(0, size - 1);
-            if (addToUsed)
+            var usedPokemon = new List<int>();
+            while (usedPokemon.Count != capacity)
             {
+                var num = random.Next(0, size - 1);
+                // Make sure number is unique
+                while (usedPokemon.Contains(num))
+                    num = random.Next(0, size - 1);
                 usedPokemon.Add(num);
+                logger.LogInformation($"Pokemon at Id '{num}' expected to be added to board.");
             }
-            logger.LogInformation($"Pokemon at Id '{num}' expected to be added to board.");
-            return num;
+            return usedPokemon;
         }
     }
 }
