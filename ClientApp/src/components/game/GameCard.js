@@ -5,7 +5,6 @@ import {
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
 import { CardInfo } from './CardInfo';
-import Dots from './Types/dots.png';
 
 export class GameCard extends Component {
     constructor(props) {
