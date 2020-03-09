@@ -33,7 +33,7 @@ export class GameCard extends Component {
                         </Card>
                     </div>
                     } position="right">
-                    <CardInfo style='padding: 5px' val={this.props.val} />
+                    <CardInfo style='padding: 5px' val={this.props.val} updateGame={this.props.updateGame} gameOver={this.props.gameOver}/>
                 </Popup>
             </div>
         )

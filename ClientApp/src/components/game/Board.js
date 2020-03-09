@@ -44,7 +44,7 @@ export class Board extends Component {
                         if(val.name == this.props.rightAnswer){
                             highlight = true
                         }
-                        return <GameCard key={i} val={val} highlight={highlight}></GameCard>
+                        return <GameCard key={i} val={val} highlight={highlight} updateGame={this.props.updateGame} gameOver={this.props.gameOver}></GameCard>
                     })}
                 </div>
             )
