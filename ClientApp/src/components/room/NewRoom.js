@@ -14,7 +14,7 @@ export class NewRoom extends Component {
         fetch('/api/room/create',
             {
                 method: 'post',
-                body: JSON.stringify({ hard: this.state.selected === "hard" })
+                body: JSON.stringify({ hard: (this.state.selected === "hard").toString() })
             })
             .then((resp) => {
                 if (!resp.ok)
