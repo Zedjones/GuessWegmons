@@ -33,7 +33,7 @@ namespace GuessWegmons.Controllers
         [HttpPost]
         public Dictionary<string, string> Create(bool hard)
         {
-            var roomName = storageService.CreateRoom(HttpContext.Session.Id);
+            var roomName = storageService.CreateRoom(HttpContext.Session.Id, hard);
             HttpContext.Session.SetString("roomName", roomName);
             HttpContext.Session.SetInt32("player", 1);
             return new Dictionary<string, string>{ {"id", roomName} };
