@@ -23,6 +23,19 @@ export class CardInfo extends Component {
     constructor(props) {
         super(props)
         this.state = { marked: false }
+        this.sendGuess = this.sendGuess.bind(this)
+    }
+
+    sendGuess() {
+        fetch(`/api/room/guess?guess=${this.props.val.name}`, { method: 'post' })
+            .then((resp) => {
+                if (resp.ok === true){
+                    this.props.gameOver(true)
+                } else {
+                    this.props.gameOver(false)
+                }
+            })
+        this.props.updateGame()
     }
 
     render() {
@@ -70,7 +83,7 @@ export class CardInfo extends Component {
                     }
                 })}</div>
                 <p>Generation: {this.props.val.generation}</p>
-                <button style={buttonStyle}>Guess this Pokemon?</button>
+                <button style={buttonStyle} onClick={this.sendGuess}>Guess this Pokemon?</button>
             </div>
         )
     }

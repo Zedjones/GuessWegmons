@@ -92,7 +92,7 @@ export class Game extends Component {
 
     render() {
         var alert = (this.state.showAlert) ? <Alert color="warning">{this.state.codeErr}</Alert> : <div></div>
-        var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion} gameOver={this.gameOver}></Question> : <div></div>
+        var question = (this.state.myTurn && !this.state.questionOverride && this.state.playersReady) ? <Question updateGame={this.askedQuestion}></Question> : <div></div>
         var answer = (!this.state.myTurn && this.state.latestQuestion && this.state.playersReady) ? <Answer question={this.state.latestQuestion}></Answer> : <div></div>
         var gameover = (this.state.gameOver) ? <Alert color="primary">{this.state.gameOver}</Alert> : <div></div>
         var waitingPlayers = (!this.state.playersReady) ? <Alert color="primary">Waiting For Another Player</Alert> : <div></div>
@@ -108,7 +108,7 @@ export class Game extends Component {
                 {gameover}
                 <div className="split">
                     <div>
-                        <Board rightAnswer={this.state.rightAnswer}></Board>
+                        <Board updateGame={this.askedQuestion} gameOver={this.gameOver} rightAnswer={this.state.rightAnswer}></Board>
                     </div>
                     <div>
                         <History questions={this.state.history} latestQuestion={this.state.latestQuestion}></History>

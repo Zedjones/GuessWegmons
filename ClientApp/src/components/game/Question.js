@@ -8,8 +8,6 @@ export class Question extends Component {
         this.state = { textVal: '' }
         this.handleChange = this.handleChange.bind(this)
         this.sendMessage = this.sendMessage.bind(this)
-        this.handleGuess = this.handleGuess.bind(this)
-        this.sendGuess = this.sendGuess.bind(this)
     }
 
     handleChange(event) {
@@ -30,23 +28,6 @@ export class Question extends Component {
         this.props.updateGame()
     }
 
-    handleGuess(event) {
-        this.setState({ guess: event.target.value })
-    }
-
-    sendGuess() {
-        // TODO submit guess endpoint
-        fetch(`/api/room/guess?guess=${this.state.guess}`, { method: 'post' })
-            .then((resp) => {
-                if (resp.ok === true){
-                    this.props.gameOver(true)
-                } else {
-                    this.props.gameOver(false)
-                }
-            })
-        this.props.updateGame()
-    }
-
     render() {
         return (
             <div>
@@ -54,10 +35,6 @@ export class Question extends Component {
                 <Input type="text" value={this.state.textval} onChange={this.handleChange} className="center" />
                 <br />
                 <Button onClick={this.sendMessage}>Ask</Button>
-                <h2>OR Make a Guess</h2>
-                <Input type="text" value={this.state.guess} onChange={this.handleGuess} className="center" />
-                <br />
-                <Button onClick={this.sendGuess}>Guess</Button>
             </div>
         )
     }
