@@ -20,7 +20,15 @@ namespace GuessWegmons.Models
         /// </summary>
         public List<string> Types { get; set; }
 
+        /// <summary>
+        /// The Pokemon's generation (the game it is from in numeric form).
+        /// </summary>
         public int Generation { get; set; }
+
+        /// <summary>
+        /// Id of the Pokemon.
+        /// </summary>
+        public int Id { get; set; }
 
         /// <summary>
         /// Url of the sprite for the Pokemon.
@@ -38,6 +46,7 @@ namespace GuessWegmons.Models
             Generation = Int32.Parse(new Uri(fromSpecies.Generation.Url).Segments.Last().TrimEnd('/'));
             PictureURL = fromMon.Sprites.FrontDefault;
             Types = fromMon.Types.Select(type => type.Type.Name).ToList();
+            Id = fromMon.Id;
         }
     }
 }
