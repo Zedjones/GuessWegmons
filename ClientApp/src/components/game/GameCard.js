@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
-import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button
-} from 'reactstrap';
+import { Card, CardImg, CardTitle } from 'reactstrap';
 import { CardInfo } from './CardInfo';
 
 export class GameCard extends Component {
@@ -22,13 +19,18 @@ export class GameCard extends Component {
         if (this.state.marked)
             markedStyle = { background: '#aaa' }
         var highlightStyle = {}
+        var star = { display: 'none' }
         if (this.props.highlight)
-            highlightStyle = { border: '1px solid #006de9' }
+        {
+            highlightStyle = { border: '1px solid black' }
+            star = { display: 'block', fontSize: '32px', position: 'absolute', color: 'black' }
+        }
         return (
             <div>
                 <Popup on="hover" closeOnDocumentClick trigger={
                     <div>
                         <Card style={Object.assign({}, cardStyle, markedStyle, highlightStyle)} onClick={this.toggle}>
+                            <CardTitle style={star}>&#9733;</CardTitle>
                             <CardImg top width="100%" style={imgStyle} src={this.props.val.pictureURL} alt={this.props.val.name} />
                         </Card>
                     </div>
@@ -49,6 +51,6 @@ const imgStyle = {
     margin: 'auto',
     height: '120px',
     width: '120px',
-    opacity: '1.0'
+    opacity: '1.0',
 }
     
