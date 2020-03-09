@@ -119,6 +119,31 @@ namespace GuessWegmons.Services
             }
         }
 
+        public bool RemovePlayer(string roomName, int playerNum)
+        {
+            Room roomToUpdate;
+            rooms.TryGetValue(roomName, out roomToUpdate);
+            var modifiedRoom = roomToUpdate.DeepClone();
+            if (playerNum == 1)
+            {
+                modifiedRoom.Player1Session = null;
+            }
+            else
+            {
+                modifiedRoom.Player1Session = null;
+            }
+            if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
+            {
+                logger.LogInformation($"Player '{playerNum}' successfully removed from room '{roomName}'.");
+                return true;
+            }
+            else
+            {
+                logger.LogInformation($"Player '{playerNum}' not removed from room '{roomName}', does not exist.");
+                return false;
+            }
+        }
+
         /// <summary>
         /// Get a random hex string, see
         /// https://stackoverflow.com/questions/1054076/randomly-generated-hexadecimal-number-in-c-sharp#.
@@ -144,7 +169,7 @@ namespace GuessWegmons.Services
         {
             Room roomToUpdate;
             rooms.TryGetValue(roomName, out roomToUpdate);
-            var modifiedRoom = roomToUpdate.DeepClone(); 
+            var modifiedRoom = roomToUpdate.DeepClone();
             modifiedRoom.questionsAndAnswers.Push(question);
             if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
             {

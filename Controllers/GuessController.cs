@@ -54,6 +54,7 @@ namespace GuessWegmons.Controllers
                     {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player2Answer}', guess was correct!");
                         room.PlayerWon = 1;
+                        storageService.RemovePlayer(room.Name, 1);
                         return Ok(true);
                     }
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player2Answer}', guess was incorrect!");
@@ -67,6 +68,7 @@ namespace GuessWegmons.Controllers
                     {
                         logger.LogInformation($"Guess '{guess}' = Answer '{room.Player1Answer}', guess was correct!");
                         room.PlayerWon = 2;
+                        storageService.RemovePlayer(room.Name, 2);
                         return Ok(true); 
                     }  
                     logger.LogInformation($"Guess '{guess}' != Answer '{room.Player1Answer}', guess was incorrect!");
