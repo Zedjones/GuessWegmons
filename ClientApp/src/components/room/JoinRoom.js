@@ -16,7 +16,8 @@ export class JoinRoom extends Component {
         this.setState({ textval: event.target.value });
     }
 
-    joinWithCode() {
+    joinWithCode(ev) {
+        ev.preventDefault()
         fetch(`/api/room/join?id=${this.state.textval}`, { method: 'post' })
             .then((resp) => {
                 if (!resp.ok)
@@ -35,17 +36,26 @@ export class JoinRoom extends Component {
     render() {
         const alertStyle = (this.state.showAlert) ? { display: 'block' } : { display: 'none' }
         return (
-            <div>
+            <form onSubmit={this.joinWithCode}>
                 <h2>Or Join A Room</h2>
                 <Input type="text" value={this.state.textval} style={codeInputStyle} onChange={this.handleChange} className="center" />
                 <br />
-                <Button onClick={this.joinWithCode}>Join Room</Button>
+                <Input style={inputButton} type="submit" value="Join Room" />
                 <Alert style={alertStyle} color="warning">{this.state.codeErr}</Alert>
-            </div>
+            </form>
         )
     }
 }
 
 const codeInputStyle = {
     maxWidth: '10em'
+}
+
+const inputButton = {
+    width: '6em',
+    background: '#6c757d',
+    color: 'white',
+    border: '10px',
+    marginLeft: 'auto',
+    marginRight: 'auto'
 }
