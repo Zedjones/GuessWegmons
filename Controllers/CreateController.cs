@@ -34,7 +34,7 @@ namespace GuessWegmons.Controllers
         /// </summary>
         /// <returns>Name of the created room</returns>
         [HttpPost]
-        public Dictionary<string, string> Create(string hard)
+        public Dictionary<string, string> Create([FromBody] string hard)
         { 
             logger.LogInformation(hard);
             bool hardMode = false;
