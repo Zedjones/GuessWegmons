@@ -11,11 +11,7 @@ export class NewRoom extends Component {
     }
 
     getCode() {
-        fetch('/api/room/create',
-            {
-                method: 'post',
-                body: (this.state.selected === "hard").toString()
-            })
+        fetch(`/api/room/create?hard=${(this.state.selected === "hard").toString()}`, {method: 'post'})
             .then((resp) => {
                 if (!resp.ok)
                     throw Error("")
