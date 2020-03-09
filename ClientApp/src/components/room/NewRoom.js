@@ -14,7 +14,7 @@ export class NewRoom extends Component {
         fetch('/api/room/create',
             {
                 method: 'post',
-                hard: this.state.selected === "hard"
+                body: JSON.stringify({ hard: this.state.selected === "hard" })
             })
             .then((resp) => {
                 if (!resp.ok)
@@ -31,7 +31,7 @@ export class NewRoom extends Component {
     }
 
     select(ev) {
-        this.setState({selected: ev.target.value})
+        this.setState({ selected: ev.target.value })
     }
 
     render() {
@@ -40,8 +40,8 @@ export class NewRoom extends Component {
             <div>
                 <Alert style={alertStyle} color="info">{this.state.codeErr}</Alert>
                 <h2>Start A New Room</h2>
-                <Label style={optionStyle}><Input type="radio" value="easy" checked={this.state.selected === "easy"} onChange={this.select}/>Easy</Label>
-                <Label><Input type="radio" value="hard" checked={this.state.selected === "hard"} onChange={this.select}/>Hard</Label>
+                <Label style={optionStyle}><Input type="radio" value="easy" checked={this.state.selected === "easy"} onChange={this.select} />Easy</Label>
+                <Label><Input type="radio" value="hard" checked={this.state.selected === "hard"} onChange={this.select} />Hard</Label>
                 <br></br>
                 <Button onClick={this.getCode}>Create</Button>
             </div>
