@@ -39,6 +39,11 @@ namespace GuessWegmons.Controllers
             }
             var roomName = HttpContext.Session.GetString("roomName");
             var room = storageService.GetRoom(roomName);
+            if (!(room.PlayerWon is null) && (room.Player1Session is null || room.Player2Session is null)) {
+                storageService.RemovePlayer(roomName, playerId.Value);
+                HttpContext.Session.Remove("player");
+                HttpContext.Session.Remove("roomName");
+            }
             if (room is null)
             {
                 return BadRequest();
