@@ -83,7 +83,7 @@ namespace GuessWegmons.Services
             rooms.TryGetValue(roomName, out roomToUpdate);
             var modifiedRoom = roomToUpdate.DeepClone();
             modifiedRoom.Turn++;
-            if (rooms.TryUpdate(roomName, roomToUpdate, modifiedRoom))
+            if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
             {
                 logger.LogWarning($"Room '{roomName}' turn incremented.");
                 return true;
@@ -146,7 +146,7 @@ namespace GuessWegmons.Services
             rooms.TryGetValue(roomName, out roomToUpdate);
             var modifiedRoom = roomToUpdate.DeepClone(); 
             modifiedRoom.questionsAndAnswers.Push(question);
-            if (rooms.TryUpdate(roomName, roomToUpdate, modifiedRoom))
+            if (rooms.TryUpdate(roomName, modifiedRoom, roomToUpdate))
             {
                 logger.LogInformation($"'{question}' successfully added to room '{roomName}'.");
             }
