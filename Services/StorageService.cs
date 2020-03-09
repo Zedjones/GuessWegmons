@@ -62,6 +62,7 @@ namespace GuessWegmons.Services
             if (hardMode) {
                 type = random.Next(1, 19);
             }
+            logger.LogInformation($"Hard mode type id: '{type}'.");
 
             var newRoom = new Room()
             {
