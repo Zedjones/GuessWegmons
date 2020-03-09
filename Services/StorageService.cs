@@ -50,12 +50,19 @@ namespace GuessWegmons.Services
         /// Create a new room.
         /// </summary>
         /// <param name="playerId">Player session Id to add</param>
+        /// <param name="hardMode">If in hard mode, defaults to false.</param>
         /// <returns>Name of the created room</returns>
-        public string CreateRoom(string playerId)
+        public string CreateRoom(string playerId, bool hardMode = false)
         {
             string roomName = GetRandomHexNumber(6);
             while (rooms.Any(room => room.Value.Name.Equals(roomName)))
                 roomName = GetRandomHexNumber(6);
+
+            int type = -1;
+            if (hardMode) {
+                type = random.Next(1, 19);
+            }
+
             var newRoom = new Room()
             {
                 Name = roomName,
@@ -64,7 +71,8 @@ namespace GuessWegmons.Services
                 PokemonDtos = new List<PokemonDto>(),
                 questionsAndAnswers = new Stack<QuestionAnswer>(),
                 Turn = 1,
-                PlayerWon = null
+                PlayerWon = null,
+                HardModeType = type
             };
             newRoom.CreatePokemonList(retrievePokemon);
             rooms[roomName] = newRoom;
