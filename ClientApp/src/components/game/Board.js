@@ -38,14 +38,17 @@ export class Board extends Component {
     render() {
         if (this.state.board) {
             return (
-                <div style={boardStyle}>
-                    {this.state.board && this.state.board.map((val, i) => {
-                        var highlight = false
-                        if(val.name == this.props.rightAnswer){
-                            highlight = true
-                        }
-                        return <GameCard key={i} val={val} highlight={highlight}></GameCard>
-                    })}
+                <div>
+                    <h3 style={header}>Your pokemon is: {this.props.rightAnswer}</h3>
+                    <div style={boardStyle}>
+                        {this.state.board && this.state.board.map((val, i) => {
+                            var highlight = false
+                            if(val.name == this.props.rightAnswer){
+                                highlight = true
+                            }
+                            return <GameCard key={i} val={val} highlight={highlight}></GameCard>
+                        })}
+                    </div>
                 </div>
             )
         } else {
@@ -61,4 +64,7 @@ export class Board extends Component {
 const boardStyle = {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr'
+}
+
+const header = {
 }
