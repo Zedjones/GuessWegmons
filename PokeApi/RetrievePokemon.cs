@@ -41,17 +41,27 @@ namespace GuessWegmons.PokeApi
         /// <summary>
         /// Create and send a full list of Pokemon.
         /// </summary>
+        /// <param name="type">If playing in hard mode, a type will be specified. Defaults to -1 (easy mode).</param>
         /// <returns>List of Pokemon</returns>
-        public async Task<IEnumerable<(Pokemon, PokemonSpecies)>> CreateList()
+        public async Task<IEnumerable<(Pokemon, PokemonSpecies)>> CreateList(int type = -1)
         {
-            var allPokemonList = await pokeClient.GetNamedResourcePageAsync<Pokemon>(Int32.MaxValue, 0);
+            List<NamedApiResource<Pokemon>> allPokemonList;
+            // If in hard mode, all pokemon should be of the specified type
+            if (type != -1) {
+                var typed = await pokeClient.GetResourceAsync<PokeApiNet.Type>(type);
+                allPokemonList = typed.Pokemon.Select(pokemons => pokemons.Pokemon).ToList();
+            }
+            // Otherwise, populate using all Pokemon
+            else {
+                allPokemonList = (await pokeClient.GetNamedResourcePageAsync<Pokemon>(Int32.MaxValue, 0)).Results;
+            }
 
             var usedPokemon = PickPokemon(allPokemonList.Count, 25);
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var pokemonTasks = usedPokemon.Select(async (i) =>
             {
-                var newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[i]);
+                var newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList[i]);
                 while (newPoke.Sprites.FrontDefault is null)
                 {
                     int newIndex;
@@ -60,12 +70,13 @@ namespace GuessWegmons.PokeApi
                         newIndex = random.Next(0, allPokemonList.Count - 1);
                     }
                     while (usedPokemon.Contains(newIndex));
-                    newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList.Results[newIndex]);
+                    newPoke = await pokeClient.GetResourceAsync<Pokemon>(allPokemonList[newIndex]);
                 }
                 var newPokeSpecies = await pokeClient.GetResourceAsync<PokemonSpecies>(newPoke.Species);
                 logger.LogInformation($"Pokemon '{newPoke.Name}' added to board.");
                 return (newPoke, newPokeSpecies);
             });
+
             var pokemon = await Task.WhenAll(pokemonTasks);
             stopwatch.Stop();
             logger.LogInformation($"Fetching took {stopwatch.Elapsed}");

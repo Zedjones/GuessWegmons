@@ -39,7 +39,6 @@ namespace GuessWegmons.Controllers
         /// Verify if a guess is correct.
         /// </summary>
         /// <param name="guess">Guess to check</param>
-        /// <param name="player">Player making the guess (1 = p1, 2 = p2)</param>
         [HttpPost]
         public ActionResult<bool> MakeGuess([FromQuery(Name = "guess")] string guess)
         {

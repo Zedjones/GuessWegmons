@@ -43,10 +43,10 @@ export class Board extends Component {
                     <div style={boardStyle}>
                         {this.state.board && this.state.board.map((val, i) => {
                             var highlight = false
-                            if(val.name == this.props.rightAnswer){
+                            if (val.name == this.props.rightAnswer) {
                                 highlight = true
                             }
-                            return <GameCard key={i} val={val} highlight={highlight}></GameCard>
+                            return <GameCard key={i} val={val} highlight={highlight} updateGame={this.props.updateGame} gameOver={this.props.gameOver}></GameCard>
                         })}
                     </div>
                 </div>
