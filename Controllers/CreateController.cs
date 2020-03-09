@@ -17,13 +17,13 @@ namespace GuessWegmons.Controllers
         /// Storage Service object for manipulating rooms.
         /// </summary>
         StorageService storageService;
-        Logger<CreateController> logger;
+        ILogger<CreateController> logger;
 
         /// <summary>
         /// Create a CreateController object.
         /// </summary>
         /// <param name="storageService">Storage Service object for manipulating rooms</param>
-        public CreateController(StorageService storageService, Logger<CreateController> logger)
+        public CreateController(StorageService storageService, ILogger<CreateController> logger)
         {
             this.storageService = storageService;
             this.logger = logger;
@@ -34,9 +34,9 @@ namespace GuessWegmons.Controllers
         /// </summary>
         /// <returns>Name of the created room</returns>
         [HttpPost]
-        public Dictionary<string, string> Create([FromBody] string hard)
+        public Dictionary<string, string> Create(bool hard)
         { 
-            logger.LogInformation(hard);
+            logger.LogInformation(hard.ToString());
             bool hardMode = false;
             if (hard.Equals("true")) {
                 hardMode = true;
