@@ -1,3 +1,5 @@
 1. Leave Game
 
 2. Use ids as primary key instead of name (Mega Charizard X and Mega Charizard Y have same name)
+
+3. Write name of game underneath gen number
